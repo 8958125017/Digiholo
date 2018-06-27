@@ -1,0 +1,47 @@
+page-dashboard {
+    ion-content{
+     background-image: url('../assets/img/bg-img.jpg');
+     background-repeat: no-repeat;
+     backgorund-size:cover;
+     background-position: center;
+      text-align: center;
+    }
+
+
+  .home-button{
+    background-color: white;
+    padding: 8px;
+    border-radius: 6%;
+    background-color:white;
+    width: 28%;
+    margin:auto;
+    font-size:12px;
+  }
+  .text-white{
+    color: white !important;
+  }
+  .nav-home-left-button{
+    font-size: 25px;
+    padding: 0 10px;
+  }
+  .nav-home-right-button{
+    font-size: 20px;
+    padding: 0 10px;
+  }
+  .last-viewed-card{
+    border-radius: 3%;
+    font-size: 75%;
+    width: 88%;
+    top: 20px;
+    margin-left: auto;
+    margin-top: 64px;
+    margin-right: auto;
+    
+  }
+  .last-viewed-card button{
+    font-size: 1.3em;
+    color: #0099c3;
+  }
+
+
+}

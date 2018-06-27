@@ -1,0 +1,50 @@
+<!--
+  Generated template for the StorelocationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+  	   <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Store Location</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+ <form [formGroup]="storeLocationForm">
+     <ion-list>
+
+		  <ion-item  [ngClass]="{'error-border':!storeLocationForm.controls.brand.valid && storeLocationForm.controls.brand.dirty}">
+		    <ion-label floating>Brand</ion-label>
+		    <ion-input [(ngModel)]="storeInfo.brand" formControlName="brand" type="text" required></ion-input> 
+		   <!-- </div> -->
+		  </ion-item>
+        <ion-item *ngIf="storeLocationForm.controls.brand.hasError('required') && storeLocationForm.controls.brand.dirty">
+             <p style="color:red;">Sorry, field brand is required!</p>
+        </ion-item>
+       
+      <ion-item  [ngClass]="{'error-border':!storeLocationForm.controls.product.valid && storeLocationForm.controls.product.dirty}">
+        <ion-label floating>Product</ion-label>
+        <ion-input [(ngModel)]="storeInfo.product" formControlName="product" type="text" required></ion-input>
+      
+      </ion-item>
+        <ion-item *ngIf="storeLocationForm.controls.product.hasError('required') && storeLocationForm.controls.product.dirty">
+             <p style="color:red;">Sorry, field product Name is required!</p>
+        </ion-item>
+
+			
+     
+         <ion-row responsive-sm>
+				<ion-col >
+					<button class="button-backcolor" ion-button (click)="getStoreLocations()"  [disabled]="!storeLocationForm.valid" type="submit" block>Locate</button>
+				</ion-col>
+			</ion-row>
+   </ion-list>
+    </form>
+</ion-content>

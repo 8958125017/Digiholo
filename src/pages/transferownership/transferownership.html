@@ -1,0 +1,39 @@
+<!--
+  Generated template for the TransferownershipPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+<
+  <ion-navbar>
+     <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>transferownership</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+           
+            <form [formGroup]="transferOwnerShipForm">
+     <ion-list>
+
+		  <ion-item  [ngClass]="{'error-border':!transferOwnerShipForm.controls.data.valid && transferOwnerShipForm.controls.data.dirty}">
+		    <ion-label floating>UID or phone No</ion-label>
+		    <ion-input [(ngModel)]="productInfo.data" formControlName="data" type="text" required></ion-input> 
+		   <!-- </div> -->
+		  </ion-item>
+        <ion-item *ngIf="transferOwnerShipForm.controls.data.hasError('required') && transferOwnerShipForm.controls.data.dirty">
+             <p style="color:red;">Sorry, field  is required!</p>
+        </ion-item>
+         <ion-row responsive-sm>
+				<ion-col >
+					<button class="button-backcolor" ion-button (click)="transferOwnership()"  [disabled]="!transferOwnerShipForm.valid" type="submit" block>Sold</button>
+				</ion-col>
+			</ion-row>
+   </ion-list>
+    </form>
+</ion-content>

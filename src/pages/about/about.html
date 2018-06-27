@@ -1,0 +1,151 @@
+<!-- <ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Dashboard</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+<ion-header class="product-page-header">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>About</ion-title>
+  </ion-navbar>
+        <ion-title class="primary-color">
+        <div>
+         <!--  Product:   {{qrCode | slice:0:24}} -->
+          </div>
+        </ion-title>
+ 
+    <shrinking-segment-header [scrollArea]="myContent" headerHeight="150">
+
+      <ion-row class="padtop-14" text-center>
+        <ion-col col-12 class="font-18">  Manufacturer: {{productName}}</ion-col>
+        <ion-col col-12 class="font-18">Date of Manufacture: {{productDate | date:'dd-MM-yy HH:mm'}}</ion-col>
+      </ion-row>
+      <ion-grid>
+
+      <ion-row>
+        <ion-col center text-right>
+          <div class="home-button owner-a" *ngIf="!ownerstatus">
+            <img padding-bottom="" padding-top="" src="assets/img/get-owner-01.png" style="width:40px; padding-top: 0px;" >            
+          </div>
+          <div class="home-button owner-green" *ngIf="ownerstatus">           
+            <img padding-bottom="" padding-top="" src="assets/img/get-owner-01.png" style="width:40px; padding-top: 0px;" >
+          </div>
+        </ion-col>
+
+        <ion-col center text-center>
+          <div class="home-button owner-b">
+            <img padding-bottom="" padding-top="" src="assets/img/manufacture-gray-01.svg" style="width:35px; padding-top: 0px;">
+          </div>
+        </ion-col>
+
+        <ion-col center text-left>
+          <div class="home-button owner-c">
+            <img padding-bottom="" padding-top="" src="assets/img/trust-gray.svg" style="width:35px; padding-top: 0px;">
+          </div>
+        </ion-col>
+      </ion-row>
+      </ion-grid> 
+      
+
+      <ion-grid class="grid" margin-top="" padding-top="">
+
+        <ion-row class="row" padding-top="">
+
+            <div class="home-button">
+              <img padding-bottom="" padding-top="" src="assets/img/gray_qr.png" style="width:10px" >
+            </div>
+
+            <div class="home-button">
+              <img padding-bottom="" padding-top="" src="assets/img/gray_enter.png" style="width:1">
+            </div>
+        </ion-row>
+      </ion-grid>
+    </shrinking-segment-header>
+
+    <ion-toolbar color="light" mode="md">
+      <ion-segment color="dark" mode="md" [(ngModel)]="section">
+        <ion-segment-button active value="one">
+          <ion-icon ios="ios-git-merge" md="md-git-merge"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="two">
+          <ion-icon name="paper"></ion-icon>
+        </ion-segment-button>
+        <!-- <ion-segment-button value="three">
+          <ion-icon name="ios-boat-outline"></ion-icon>
+        </ion-segment-button> -->
+      </ion-segment>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content fullscreen #myContent>
+
+    <div [ngSwitch]="section" style="margin-top:30px;">
+
+      <ion-list *ngSwitchCase="'one'" style="margin-top:30px;margin-bottom: 2px">
+        <ion-card padding class="product-history-card font-15">
+        <ion-row>
+          <ion-col col-6> <b> Origin :</b></ion-col>
+          <ion-col col-6> {{origin}} </ion-col>
+          </ion-row>
+         
+        </ion-card>
+        <ion-card padding class="product-history-card font-15" *ngFor="let data of dataList">
+          <ion-row>
+                <ion-col col-6> <b>Date:</b> </ion-col>
+               <ion-col col-6>  {{data.date | date:'dd-MM-yy HH:mm'}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-6><b> Location: </b> </ion-col>
+               <ion-col col-6>   {{data.location}}</ion-col>
+            </ion-row>
+
+            <!--  <div>Date: {{data.date | date:'dd-MM-yy HH:mm'}}</div>
+             <div>Location: {{data.location}}</div> -->
+        </ion-card>
+
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'two'">
+        <ion-card padding class="product-history-card font-15">
+          <div *ngFor="let data of display">
+              <ion-row>
+                <ion-col col-6><b> {{data.key}}:</b></ion-col>
+               <ion-col col-6>  {{data.value}}</ion-col>
+            </ion-row>
+              <br>
+          </div>
+         
+         <div >
+              <ion-row>
+                <ion-col col-6><b> Share:</b></ion-col>
+               <ion-col col-6>  Report</ion-col>
+            </ion-row>
+              <br>
+          </div>
+         
+        </ion-card>
+      </ion-list>
+
+      <!-- <ion-list *ngSwitchCase="'three'">
+
+      </ion-list> -->
+
+    </div>
+
+</ion-content>
+<!-- <ion-footer>
+  <ion-toolbar class="product-page-header">
+   <ion-row class="primary-color">
+              <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+               <ion-col col-6 text-center (click)="openModal()">  Report</ion-col>
+            </ion-row>
+  </ion-toolbar>
+</ion-footer> -->

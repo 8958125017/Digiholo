@@ -1,0 +1,100 @@
+<ion-header class="product-page-header">
+    <ion-navbar color="accent">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My Profile</ion-title>
+  </ion-navbar>
+
+    <shrinking-segment-header [scrollArea]="myContent" headerHeight="2px">
+
+     
+     
+    
+    </shrinking-segment-header>
+    <ion-toolbar color="light" mode="md">
+      <ion-segment color="dark" mode="md" [(ngModel)]="section">
+        <ion-segment-button active value="one" (click)="getOwenedData()">
+          <ion-icon ios="ios-git-merge" md="md-git-merge"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="two" (click)="getScanedData()">
+          <ion-icon name="paper"></ion-icon>
+        </ion-segment-button>     
+      </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen #myContent>
+
+    <div [ngSwitch]="section" style="margin-top:30px;">
+
+      <ion-list *ngSwitchCase="'one'" style="margin-top:30px;margin-bottom: 2px">
+        
+        <ion-card padding class="product-history-card font-15" >
+          <ion-row>
+               <ion-col col-6> <b (click)="getownedProductInfo()">Product:</b> </ion-col>
+               <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row> <br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row>
+        </ion-card>
+
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'two'">
+        <ion-card padding class="product-history-card font-15">
+          <div >
+               <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row><br>
+            <ion-row>
+                <ion-col col-6> <b>Product:</b> </ion-col>
+                <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
+            </ion-row>
+              <br>
+          </div>
+         <div >              
+        </div>
+         
+        </ion-card>    
+      </ion-list>
+
+     
+
+    </div>
+</ion-content>

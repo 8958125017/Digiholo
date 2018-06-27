@@ -1,0 +1,49 @@
+<!--
+  Generated template for the ReportModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+
+    <ion-header>
+    	<ion-navbar>
+    		<ion-buttons start>
+    			<button ion-button (click)="dismiss()">Close</button>
+    		</ion-buttons>
+    		<ion-title>Report an issue App </ion-title>
+    	</ion-navbar>
+    </ion-header>
+    
+    <ion-content padding>
+      
+      <ion-row>
+               <b> Please provide details of the issue</b>           
+            </ion-row>
+
+    <form [formGroup]="reportForm">
+     <ion-list>
+
+      <ion-item  [ngClass]="{'error-border':!reportForm.controls.reportError.valid && reportForm.controls.reportError.dirty}">
+        <ion-label floating>Issue</ion-label>
+       <ion-textarea [(ngModel)]="reportDetails.reportError" formControlName="reportError" type="text" required></ion-textarea>
+       <!-- </div> -->
+      </ion-item>
+
+        <ion-item *ngIf="reportForm.controls.reportError.hasError('required') && reportForm.controls.reportError.dirty">
+             <p style="color:red;">Sorry, field issue is required!</p>
+        </ion-item>
+       
+      
+         <ion-row responsive-sm>
+        <ion-col >
+          <button class="button-backcolor" ion-button (click)="sendReport()"  [disabled]="!reportForm.valid" type="submit" block>Report</button>
+        </ion-col>
+      </ion-row>
+   </ion-list>
+    </form>
+     <ion-row>
+               <b> our customer support team will get in touch with you as soon as possible.</b>           
+            </ion-row>
+    </ion-content>

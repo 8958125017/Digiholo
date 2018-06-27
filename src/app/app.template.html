@@ -1,0 +1,42 @@
+<ion-split-pane>
+
+ 
+
+  <!-- logged in menu -->
+  <ion-menu id="loggedInMenu" [content]="content">
+
+    <ion-header>
+      <ion-toolbar>
+         <ion-title style="color: #fff; padding: 0 20px 1px;" text-left>
+          <ion-avatar item-start class="myphoto">
+        <img src="assets/img/marty-avatar.jpeg" style="height: 70px; width: 71px;border-radius: 50%; font-size: 4.2em;   margin-left: 83px;">
+      </ion-avatar>
+         <!--  <ion-icon name="contact" class="icon-chat-user" style="font-size: 4.2em;">     
+          </ion-icon> -->
+          <br>
+          <small class="white-text">Uid PJ123</small>
+       </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="outer-content">
+
+      <ion-list>
+        <!-- <ion-list-header>
+          Account
+        </ion-list-header> -->
+        <button class="sidemenu-item" ion-item menuClose *ngFor="let p of loggedInPages" (click)="openPage(p)">
+          <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+          {{p.title}}
+        </button>
+      </ion-list>
+
+
+    </ion-content>
+
+  </ion-menu>
+
+  <!-- main navigation -->
+  <ion-nav [root]="rootPage" #content swipeBackEnabled="false" main name="app"></ion-nav>
+
+</ion-split-pane>

@@ -1,0 +1,78 @@
+<ion-header>
+
+  <ion-navbar color="accent">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My Profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+
+    <ion-item>
+      <ion-avatar item-start class="myphoto">
+        <img src="assets/img/marty-avatar.jpeg" style="height: 100px; width: 100px;    margin-left: 83px;">
+      </ion-avatar>
+     <!--  <h2>Marty McFly</h2>
+      <p>November 5, 1955</p> -->
+    </ion-item>
+
+    
+
+    <ion-card-content>
+    <form [formGroup]="profileUpdateForm">
+     <ion-list>
+
+		  <ion-item  [ngClass]="{'error-border':!profileUpdateForm.controls.userName.valid && profileUpdateForm.controls.userName.dirty}">
+		    <ion-label floating>Username</ion-label>
+		    <ion-input [(ngModel)]="userInfo.userName" formControlName="userName" type="text" required></ion-input> 
+		   <!-- </div> -->
+		  </ion-item>
+        <ion-item *ngIf="profileUpdateForm.controls.userName.hasError('required') && profileUpdateForm.controls.userName.dirty">
+             <p style="color:red;">Sorry, field user name is required!</p>
+        </ion-item>
+       
+      <ion-item  [ngClass]="{'error-border':!profileUpdateForm.controls.phoneNo.valid && profileUpdateForm.controls.phoneNo.dirty}">
+        <ion-label floating>Phone No</ion-label>
+        <ion-input [(ngModel)]="userInfo.phoneNo" formControlName="phoneNo" type="text" required></ion-input>
+      
+      </ion-item>
+        <ion-item *ngIf="profileUpdateForm.controls.phoneNo.hasError('required') && profileUpdateForm.controls.phoneNo.dirty">
+             <p style="color:red;">Sorry, field phone No is required!</p>
+        </ion-item>
+
+			
+      <ion-item  [ngClass]="{'error-border':!profileUpdateForm.controls.emailId.valid && profileUpdateForm.controls.emailId.dirty}">
+        <ion-label floating>Email Id</ion-label>
+        <ion-input [(ngModel)]="userInfo.emailId" formControlName="emailId" type="text" required></ion-input>
+      
+      </ion-item>
+        <ion-item *ngIf="profileUpdateForm.controls.emailId.hasError('required') && profileUpdateForm.controls.emailId.dirty">
+             <p style="color:red;">Sorry, field emailid is required!</p>
+        </ion-item>
+      <ion-item>
+
+		  <ion-label floating>Uid</ion-label>
+		    <ion-input [(ngModel)]="userInfo.uid" formControlName="uid" type="text"></ion-input>
+		  
+		  </ion-item>
+         <ion-row responsive-sm>
+				<ion-col >
+					<button class="button-backcolor" ion-button (click)="updateProfile()"  [disabled]="!profileUpdateForm.valid" type="submit" block>Update</button>
+				</ion-col>
+			</ion-row>
+   </ion-list>
+    </form>
+    </ion-card-content>
+
+
+
+  </ion-card>
+
+
+
+</ion-content>
