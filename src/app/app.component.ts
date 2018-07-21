@@ -1,17 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Events, MenuController, AlertController,App,Nav, Platform,LoadingController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Storage } from '@ionic/storage';
-import { TutorialPage } from '../pages/tutorial/tutorial';
+//import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { DashboardPage } from '../pages/dashboard/dashboard';
-import { SettingPage } from '../pages/setting/setting';
+//import { SettingPage } from '../pages/setting/setting';
 import { ConferenceData } from '../providers/conference-data';
 import { UserData } from '../providers/user-data';
-import { ProductPage } from '../pages/product/product';
+// import { ProductPage } from '../pages/product/product';
 import { StorelocationPage } from '../pages/storelocation/storelocation';
 import { ProductscanedPage } from '../pages/productscaned/productscaned';
 import { ReferPage } from '../pages/refer/refer'; 
@@ -35,7 +35,8 @@ export interface PageInterface {
 
 export class ConferenceApp { 
    emailId?:any;
-   userEmail?:any;
+   userId?:any;
+   userProfileImg?:any;
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
@@ -43,12 +44,12 @@ export class ConferenceApp {
   
   loggedInPages: PageInterface[] = [
     { title: 'Home', name: 'DashboardPage', component: DashboardPage, icon: 'home' },
-    { title: 'Profile',name: 'ProfilePage', component: ProfilePage, icon: 'home' },
-    { title: 'Products', name: 'ProductscanedPage', component: ProductscanedPage, icon: 'home' },
-    { title: 'Refer', name: 'ReferPage', component: ReferPage, icon: 'home' },
-    { title: 'Store Locator', name: 'StorelocationPage', component: StorelocationPage, icon: 'home' },
-    { title: 'Help', name: 'HelpPage', component: HelpPage, icon: 'settings' },
-    { title: 'About as', name: 'AboutappPage', component: AboutappPage, icon: 'settings' },
+    { title: 'Profile',name: 'ProfilePage', component: ProfilePage, icon: 'contact' },
+    { title: 'Products', name: 'ProductscanedPage', component: ProductscanedPage, icon: 'cart' },
+    { title: 'Refer', name: 'ReferPage', component: ReferPage, icon: 'share' },
+    // { title: 'Store Locator', name: 'StorelocationPage', component: StorelocationPage, icon: 'locate' },
+    // { title: 'Help', name: 'HelpPage', component: HelpPage, icon: 'help' },
+    // { title: 'About as', name: 'AboutappPage', component: AboutappPage, icon: 'information' },
     { title: 'Logout', name: null, component: null, icon: 'log-out',logsOut: true }
    
   ];
@@ -94,10 +95,14 @@ export class ConferenceApp {
 
     this.listenToLoginEvents();
      events.subscribe('shareObject', (userData) => {       
-       localStorage.setItem('userprofileEmailId',JSON.stringify(userData));
-       this.userEmail=JSON.parse(localStorage.getItem('userprofileEmailId')); 
-       this.emailId=this.userEmail;
+       localStorage.setItem('userprofileId',JSON.stringify(userData));
+       this.userId=JSON.parse(localStorage.getItem('userprofileId')); 
+       this.emailId=this.userId;
   }); 
+     events.subscribe('userImage', (userImg) => {       
+       localStorage.setItem('userprofileImage',JSON.stringify(userImg));
+       this.userProfileImg=JSON.parse(localStorage.getItem('userprofileImage'));      
+    }); 
   }
 
   registerBackButtonAction(){

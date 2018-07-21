@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,LoadingController,Platform,ToastController,ViewController,ActionSheetController} from 'ionic-angular';
+import { NavController,NavParams,ToastController,ActionSheetController} from 'ionic-angular';
 import { SetupService } from '../../services/setup.service'
-import { FormsModule, FormControl, FormBuilder, Validators, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {  FormControl, FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { SocialSharing } from '@ionic-native/social-sharing';
 /**
  * Generated class for the ReferPage page.
@@ -17,8 +17,12 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 })
 export class ReferPage {
 referForm: FormGroup;
-referInfo: any = { referCode: "DIGIHOLO12345"};
+user:any;
+referInfo: any = { referCode: ""};
   constructor(public navCtrl: NavController,private fb: FormBuilder,public _setupService: SetupService, public navParams: NavParams,private sharingVar: SocialSharing,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController) {
+    this.user=JSON.parse(localStorage.getItem('logindetail'));                 
+    var res=JSON.parse(this.user[0].json._body);    
+    this.referInfo.referCode=res.data.reffralCode;
   }
 
   referformInit(){
@@ -43,14 +47,14 @@ referInfo: any = { referCode: "DIGIHOLO12345"};
     }
 
   ngOnInit() {     
-  this.referformInit();
+     this.referformInit();
    }
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReferPage');
   }
 
   showConfirm(){
-                var a="DIGIHOLO12345";
+                var a=this.referInfo.referCode;
                 let actionSheet = this.actionSheetCtrl.create({
                   title: 'Share address Via',
                   buttons: [

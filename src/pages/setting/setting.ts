@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController,ToastController,AlertController } from 'ionic-angular';
 import { UserEmailId } from '../../interfaces/user-options';
-import { DashboardPage } from '../dashboard/dashboard';
+//import { DashboardPage } from '../dashboard/dashboard';
 import { SetupService } from '../../providers/setup.services'; 
 /**
  * Generated class for the SettingPage page.

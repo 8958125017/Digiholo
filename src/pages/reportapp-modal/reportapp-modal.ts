@@ -1,6 +1,5 @@
-import { Component, ViewEncapsulation,OnInit, ChangeDetectorRef, EventEmitter, Output  } from '@angular/core';
+import { Component  } from '@angular/core';
 import { IonicPage, NavController, NavParams,ViewController,LoadingController,ToastController,MenuController } from 'ionic-angular';
-import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup,FormControl,Validators } from '@angular/forms';
 import { SetupService } from '../../services/setup.service' 
 

@@ -15,10 +15,10 @@
 
     <ion-item>
       <ion-avatar item-start class="myphoto">
-        <img src="assets/img/marty-avatar.jpeg" style="height: 100px; width: 100px;    margin-left: 83px;">
+        <img src={{userInfo.image}} (click)="presentActionSheet()" style="height: 100px; width: 100px;    margin-left: 83px;">
       </ion-avatar>
-     <!--  <h2>Marty McFly</h2>
-      <p>November 5, 1955</p> -->
+      <!--  <input type="file" (change)="teamImage($event)" accept="image/x-png,image/gif,image/jpeg">  -->
+   
     </ion-item>
 
     
@@ -48,16 +48,16 @@
 			
       <ion-item  [ngClass]="{'error-border':!profileUpdateForm.controls.emailId.valid && profileUpdateForm.controls.emailId.dirty}">
         <ion-label floating>Email Id</ion-label>
-        <ion-input [(ngModel)]="userInfo.emailId" formControlName="emailId" type="text" required></ion-input>
+        <ion-input [(ngModel)]="userInfo.emailId" formControlName="emailId" type="text" required disabled="true"></ion-input>
       
       </ion-item>
         <ion-item *ngIf="profileUpdateForm.controls.emailId.hasError('required') && profileUpdateForm.controls.emailId.dirty">
              <p style="color:red;">Sorry, field emailid is required!</p>
         </ion-item>
       <ion-item>
-
+<!-- 
 		  <ion-label floating>Uid</ion-label>
-		    <ion-input [(ngModel)]="userInfo.uid" formControlName="uid" type="text"></ion-input>
+		    <ion-input [(ngModel)]="userInfo.uid" formControlName="uid" type="text"></ion-input> -->
 		  
 		  </ion-item>
          <ion-row responsive-sm>

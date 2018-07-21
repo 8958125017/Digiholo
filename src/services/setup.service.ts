@@ -1,6 +1,6 @@
-import { LoginPage } from '../pages/login/login';
+
 import { Injectable } from '@angular/core';
-import { NavParams,AlertController,LoadingController,MenuController,ToastController} from 'ionic-angular';
+
 import { Http, Response, RequestOptions, Headers, Request, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
@@ -21,7 +21,7 @@ export class SetupService {
       }
 
        public extarsOnLoad() { 
-         this.basePath = "http://103.201.142.41:5000";       
+         this.basePath = "http://103.201.142.41:8007";       
         }
       
      

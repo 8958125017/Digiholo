@@ -1,11 +1,9 @@
 import { Component} from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { NavController,LoadingController,ToastController,AlertController,Nav } from 'ionic-angular';
-import { updateValue,UserEmailId,Location} from '../../interfaces/user-options';
-import { SetupService } from '../../services/setup.service'
+import { NavController,LoadingController,ToastController,AlertController } from 'ionic-angular';
+// import { SetupService } from '../../services/setup.service'
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { ProductPage} from '../../pages/product/product';
-
+import { Network } from '@ionic-native/network';
 /**
  * Generated class for the DashboardPage page.
  *
@@ -22,14 +20,14 @@ export class DashboardPage {
      selectedProduct: any;
 
   
-  constructor(public navCtrl: NavController,private barcodeScanner: BarcodeScanner,public alertCtrl: AlertController,public toastCtrl: ToastController,public loadingCtrl: LoadingController) { 
+  constructor(private toast: ToastController, private network: Network,public navCtrl: NavController,private barcodeScanner: BarcodeScanner,public alertCtrl: AlertController,public toastCtrl: ToastController,public loadingCtrl: LoadingController) { 
                                          
   
   }
 
  ownershipQrScanner(){ 
 
-    this.navCtrl.push(ProductPage, { 'getOwnproductId': 'SUMSUMG-1012','getOwnstremKey': '796f31fb04a44305bd5e50e57733b83d17fce27380e7c3ea0e79bb2aa2c92358'});
+   this.navCtrl.push(ProductPage, { 'getOwnproductId': 'Dell-12','getOwnstremKey': 'key111'});
        // this.barcodeScanner.scan().then((barcodeData) => {
        //    this.selectedProduct=barcodeData.text;
        //    if(this.selectedProduct){
@@ -40,21 +38,21 @@ export class DashboardPage {
   }
 
    qrscanner(){
-
-     this.navCtrl.push(ProductPage, { 'productID': "SUMSUMG-1012",'stremKey': "796f31fb04a44305bd5e50e57733b83d17fce27380e7c3ea0e79bb2aa2c92358"})
-        // this.barcodeScanner.scan().then((barcodeData) => {
-        //   this.selectedProduct=barcodeData.text;
-        //   if(this.selectedProduct){
-        //     var data = JSON.parse(this.selectedProduct);      
-        //    this.navCtrl.push(ProductPage, { 'productName': data.productName,'userAddress': data.userAddress});
-        //   }
-        // });
+   
+    //this.navCtrl.push(ProductPage, { 'productID': "Hand-Wash",'stremKey': "7745f353aa254a31cf2f1b43febd9d87b69b3d0922f8e3dbe7cacdf6a7686280"})
+        this.barcodeScanner.scan().then((barcodeData) => {
+          this.selectedProduct=barcodeData.text;
+          if(this.selectedProduct){
+            var data = JSON.parse(this.selectedProduct);      
+           this.navCtrl.push(ProductPage, { 'productID': data.productName,'stremKey': data.rawTxid});
+          }
+        });
   }
 
   
  enterCode(){   
      let prompt = this.alertCtrl.create({
-      title: 'Enter QR Code',       
+      title: 'Get Product Info',       
       inputs: [
         {          
           name: 'proName',
@@ -65,7 +63,7 @@ export class DashboardPage {
         {          
           name: 'strKey',
           type: 'text',
-          placeholder: 'enter stream key',         
+          placeholder: 'enter product key',         
           
         }
       ],
@@ -83,7 +81,7 @@ export class DashboardPage {
             var proName=data.proName; 
             var strKey=data.strKey;
             if(proName&&strKey){ 
-                 this.navCtrl.push(ProductPage, { 'productID': proName,'stremKey': strKey}) 
+                 this.navCtrl.push(ProductPage, { 'getOwnproductId': proName,'getOwnstremKey': strKey}) 
                }else{
               let toast = this.toastCtrl.create({
                      message: "field should be required!!",
@@ -103,7 +101,20 @@ export class DashboardPage {
     prompt.present();
   }
 
-
+ ionViewDidEnter() {
+  // this.network.onConnect().subscribe(data => {
+  
+  // }, error => console.error(error));
+ 
+  // this.network.onDisconnect().subscribe(data => {
+  //   let alert = this.alertCtrl.create({
+  //     title: 'Network was disconnected :-(',
+  //     subTitle: 'Please check your connection. And try again',
+  //     buttons: ['OK']
+  //   });
+  //   alert.present();
+  // }, error => console.error(error));
+}
 
 
 }

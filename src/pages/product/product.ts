@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,LoadingController,Platform,ToastController,ViewController,ActionSheetController,ModalController} from 'ionic-angular';
+import { NavController,NavParams,LoadingController,Platform,ToastController,ActionSheetController,AlertController,ModalController} from 'ionic-angular';
 import { SetupService } from '../../services/setup.service';
 import { ReportModalPage} from '../../pages/report-modal/report-modal';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { DashboardPage } from '../../pages/dashboard/dashboard';
+import * as moment from 'moment';
 @Component({
   selector: 'page-about',
     templateUrl: 'product.html'
@@ -35,11 +36,16 @@ public data:any[];
   qrcodestatus:boolean=false;
   ownerstatus:boolean=false;
   section: string = 'one';
-   somethings: any = new Array(20);
-   user:any
-userId:any;
-   //qrCode:any="a65ccc27cce1161d0fdeab42b2d103b278f5078b78fd3723af8caf076d7f5690";
-    constructor(public navCtrl: NavController,private modalCtrl: ModalController,private sharingVar: SocialSharing,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public platform:Platform,public navParams: NavParams,public _setupService: SetupService,public loadingCtrl: LoadingController) {
+  somethings: any = new Array(20);
+  user:any
+  userAdd:any;
+  productTime:any;   
+  // new response
+  dataItem:any;
+  strKey:any;
+  ownedDetails:any;
+  ownedTime:any;
+    constructor(public navCtrl: NavController,public alertCtrl: AlertController,private modalCtrl: ModalController,private sharingVar: SocialSharing,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public platform:Platform,public navParams: NavParams,public _setupService: SetupService,public loadingCtrl: LoadingController) {
         let backAction =  platform.registerBackButtonAction(() => {        
           this.navCtrl.pop();
           backAction();
@@ -47,69 +53,69 @@ userId:any;
         this.user=JSON.parse(localStorage.getItem('logindetail'));
           if(this.user)            {
             var res=JSON.parse(this.user[0].json._body);
-            this.userId=res.data._id;
+            this.userAdd=res.data.userAddress;
            
           }  
         var productID = this.navParams.get('productID');
         var stremKey = this.navParams.get('stremKey');
-        var productName = this.navParams.get('getOwnproductId');
-        var userAdd = this.navParams.get('getOwnstremKey');
+        this.productName = this.navParams.get('getOwnproductId');
+        // this.strKey=this.navParams.get('stremKey');
+        var proName=this.navParams.get('getOwnproductId');
+        var streamKey2 = this.navParams.get('getOwnstremKey');
+      this.strKey = streamKey2;
         if(productID&&stremKey){          
-          this.getQrscanner(productID,stremKey);  
-        }else if(productName&&userAdd){
-          this.getOwnership(productName,userAdd,this.userId)
+          this.getQrscanner(productID,stremKey,this.userAdd);  
+        }else if(proName&&streamKey2){
+          console.log("this.userAdd = =  ="+this.userAdd);
+          this.getOwnership(proName,streamKey2,this.userAdd)
         }
-       
-      
-          }
+      }
 
-           getOwnership(productName:any,userAdd:any,userId:any){ 
-                         
-              let postData = {
-                             productName : productName,
-                             userAddress:  userAdd         
-                        };
-
-                        let loading = this.loadingCtrl.create({
-                           content: 'please wait...'
+           getOwnership(productName:any,productKey:any,userAddress:any){
+                         let loading = this.loadingCtrl.create({
+                            content: 'please wait...',
+                            dismissOnPageChange: true,
+                            showBackdrop: true,
+                            duration:15000,
+                            enableBackdropDismiss: true
                           });
                          loading.present();
-                         const url = this._setupService.basePath + '/multichain/product/getStreamItems?productName='+productName+'&rawTxid='+userAdd+'&userAddress='+userId;
-                      this._setupService.GetRequest(url).subscribe((response)=>{                     
-                      
-                       loading.dismiss();
+                        let postData={
+                                   userAddress:userAddress,
+                                   productName:productName,
+                                   productKeyName:productKey
+                             }
+                       const url = this._setupService.basePath + '/multichain/product/listStreamKeyItems'
+                      this._setupService.PostRequestUnautorized(url,postData).subscribe((response)=>{   
+                       loading.dismiss();    
+                       debugger
                        if(response[0].json.responseCode==200)
-                      {                           
-                        this.dataList = [];    
-                        var result=response[0].json.data.details.asset.step;
-                        this.origin=result[0].user.location;
-                        this.productName=response[0].json.data.productName;
-                        this.productDate=response[0].json.data.details.asset.manufacture.date;
-                        this.ownerId=response[0].json.data.owners;
-                        if(this.ownerId.length>1){
-                          this.ownerstatus=true;
-                        }      
-                          
-                         this.description=  response[0].json.data.details.asset.description;       
-                         for(var key in this.description)
+                      {  
+                        this.dataList = [];  
+                        this.dataItem=response[0].json.data;
+                        var index=this.dataItem.length-1; 
+                        this.ownerstatus=this.dataItem[index].data.asset.status;
+                        this.ownedDetails=this.dataItem[index].data.asset.state;
+                        var time=this.dataItem[index].data.asset.time;                       
+                        this.ownedTime=moment.unix(time/1000).format("YYYY-MM-DD HH:MM:SS");                        
+                        var desc=   this.dataItem[index].data.asset.description;                        
+                        for(var key in desc)
                          {      
                           let data={
                                    key:key,
-                                   value:this.description[key],
+                                   value:desc[key],
                           }
                           this.display.push(data);
-                         }
-                     
-                        for(var i=1;i<result.length;i++)
-                        {
-                               let objData ={                           
-                                      date:'',
-                                      location:'',                           
-                                   };
-                               objData.date=(result[i].user.date);
-                               objData.location=(result[i].user.location);                      
-                               this.dataList.push(objData);
-                         }
+                         }this.ownerId=this.dataItem[index].data.asset.description
+                                                
+                        
+                        for(var i=0;i<1;i++) {
+                           this.origin=this.dataItem[i].data.asset.location;
+                           this.productTime=this.dataItem[i].data.asset.time;
+
+                        }       
+
+              
                       }
                       else{
                      
@@ -125,63 +131,11 @@ userId:any;
                });
             }
   
+                getQrscanner(a:any,b:any,c:any){
 
+                }
 
-            getQrscanner(productID:any,rawTx:any){       
-                                  
-                        let loading = this.loadingCtrl.create({
-                           content: 'please wait...'
-                          });
-                         loading.present();
-                      const url = this._setupService.basePath + '/multichain/product/getStreamItems?productName='+productID+'&rawTxid='+rawTx;
-                      this._setupService.GetRequest(url).subscribe((response)=>{
-                      loading.dismiss();
-                     
-                      if(response[0].json.responseCode==200)
-                      {      
-                        this.dataList = [];    
-                        var result=response[0].json.data.details.asset.step;
-                        this.origin=result[0].user.location;
-                        this.productName=response[0].json.data.productName;
-                        this.productDate=response[0].json.data.details.asset.manufacture.date;
-                       this.ownerId=response[0].json.data.owners;
-                        if(this.ownerId.length>1){
-                          this.ownerstatus=true;
-                        }     
-                         this.description= response[0].json.data.details.asset.description;       
-                         for(var key in this.description)
-                         {      
-                          let data={
-                                   key:key,
-                                   value:this.description[key],
-                          }
-                          this.display.push(data);
-                         }
-                     
-                          for(var i=1;i<result.length;i++)
-                          {
-                                 let objData ={                           
-                                        date:'',
-                                        location:'',                           
-                                     };
-                                 objData.date=(result[i].user.date);
-                                 objData.location=(result[i].user.location);                      
-                                 this.dataList.push(objData);
-                           }
-                           }
-                             else{                     
-                           let toast = this.toastCtrl.create({
-                                   message: response[0].json.responseMessage,
-                                   showCloseButton: true,
-                                   closeButtonText: 'Ok',
-                                   duration: 5000
-                              });
-                             toast.present();                   
-                           this.navCtrl.setRoot(DashboardPage);
-                          }
-                         });
-               }
-
+        
              openModal(characterNum) {  
               let modal = this.modalCtrl.create(ReportModalPage, { 
                 'prop': 'prop1', 
@@ -198,7 +152,7 @@ userId:any;
                 // modal.overlay['subscribe']((z) => {
                 //   console.log(JSON.stringify(z));
                 // })
-                const testComp = modal.overlay['instance'] as ReportModalPage;
+                // const testComp = modal.overlay['instance'] as ReportModalPage;
                 // testComp.feedbackSubmit.subscribe(() => {
                 //   alert(1);
                 // })
@@ -208,7 +162,7 @@ userId:any;
 
 
             showConfirm(){
-                var a="hello";
+                var a="productName"+" "+this.productName+","+"productKeyName"+" "+this.strKey;
                 let actionSheet = this.actionSheetCtrl.create({
                   title: 'Share address Via',
                   buttons: [
@@ -284,4 +238,24 @@ userId:any;
                         console.log('Was not shared via email');
                      });
             }
+
+          ownerInfo(value:any) {           
+            if(value=="owner"){
+                  const confirm = this.alertCtrl.create({
+            title: "Owner"+""+this.ownedDetails,
+            message: "Date "+" "+moment(this.ownedTime).format("YYYY-MM-DD HH:mm"),            
+            });
+            confirm.present();
+            }
+
+           else if (value == "manufacture"){
+                const confirm = this.alertCtrl.create({
+              title: 'Manufacture',
+              message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+              
+            });
+            confirm.present();
+            }
+        }
+        
         }

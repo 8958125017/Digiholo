@@ -1,3 +1,111 @@
-page-ownedproductinfo {
 
+page-ownedproductinfo {
+ font-size: 1em !important;
+      ion-title{
+        height: 55px;
+      }
+      .toolbar-md{
+        padding: 0 !important
+      }
+      shrinking-segment-header {
+
+          background-color: #0099c3;
+          color: #fff;
+          display: flex;
+      }
+      .padtop-14{
+      padding-top: 14px;
+      }
+      .primary-color{
+        background: #00c5e3 !important;
+        color: #fff !important;
+
+        .toolbar-title-md{
+          color: #fff !important;
+        }
+      }
+      .segment-md .segment-button{
+        height: 5.5em;
+        line-height: 6em;
+      }
+      ion-content{
+          background-image: radial-gradient(#00c5e3,#0099c3);
+          vertical-align: middle;
+        }
+      .product-history-card{
+        border-radius: 6px;
+        min-height:50px;
+        width: 88%;
+        margin-left: auto;
+        margin-right: auto;
+        
+      }
+      .font-18{
+        font-size: 18px;
+      }
+      .font-20{
+        font-size: 20px;
+
+      }
+      .font-15{
+        font-size: 15px;
+      }
+      .segment-md-dark .segment-button.activated, .segment-md-dark .segment-button.segment-activated{
+        color: #0099c3 !important;
+
+      }
+      .segment-md-dark .segment-button.activated, .segment-md-dark .segment-button.segment-activated {
+        border-color: #00c5e3 !important;
+        border-bottom-width: 5px;
+      }
+      .owner-a{
+      width:45px;
+      height:45px;
+      border-radius:50px;
+      border:1px solid #d6d6d6;
+      float:right;
+      padding:5px;
+      }
+      .owner-b{
+      width:45px;
+      height:45px;
+      border-radius:50px;
+      border:1px solid #d6d6d6;
+      margin: 0px auto;
+      padding:5px;
+      }
+      .owner-c{
+      width:45px;
+      height:45px;
+      border-radius:50px;
+      border:1px solid #d6d6d6;
+      float:left;
+      padding:5px;
+      }
+      .ion-md-git-merge:before {
+      content: "\f2fd";
+      color: #00c5e3;
+      }
+      .ion-md-paper:before {
+        content: "\f33f";
+        color: #00c5e3;
+      }
+      .ion-ios-boat-outline:before {
+        content: "\f129";
+        color: #00c5e3;
+    }
+    .owner-green { 
+          width: 45px;
+          height: 45px;
+          border-radius: 50px;
+          border: 1px solid #80ff00;
+          background: #80ff00;
+          float: right;
+          padding: 5px;
+          box-shadow: 0px 3px 8px #757575;
+      }
+
+}
+ion-toolbar.product-page-header .toolbar-background {
+    background: #01c5e3 !important;
 }

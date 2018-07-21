@@ -1,15 +1,16 @@
 <ion-header class="product-page-header">
-        <ion-title class="primary-color">
-        <div>
-          Product
-          </div>
-        </ion-title>
-
+       <ion-navbar>
+     <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title >Product Info {{strKey ? strKey:'NA'}}</ion-title>
+  </ion-navbar>        
+    
     <shrinking-segment-header [scrollArea]="myContent" headerHeight="150">
 
       <ion-row class="padtop-14" text-center>
         <ion-col col-12 class="font-18">  Manufacturer: {{productName}}</ion-col>
-        <ion-col col-12 class="font-18">Date of Manufacture: {{productDate | date:'dd-MM-yy HH:mm'}}</ion-col>
+        <ion-col col-12 class="font-18">Date of Manufacture: {{productTime | date:'dd-MM-yy HH:mm'}}</ion-col>
       </ion-row>
       <ion-grid>
 
@@ -19,19 +20,19 @@
             <img padding-bottom="" padding-top="" src="assets/img/get-owner-01.png" style="width:40px; padding-top: 0px;" >            
           </div>
           <div class="home-button owner-green" *ngIf="ownerstatus">           
-            <img padding-bottom="" padding-top="" src="assets/img/get-owner-01.png" style="width:40px; padding-top: 0px;" >
+            <img padding-bottom="" (click)="ownerInfo('owner')" padding-top="" src="assets/img/get-owner-01.png" style="width:40px; padding-top: 0px;" >
           </div>
         </ion-col>
 
         <ion-col center text-center>
           <div class="home-button owner-b">
-            <img padding-bottom="" padding-top="" src="assets/img/manufacture-gray-01.svg" style="width:35px; padding-top: 0px;">
+            <img padding-bottom="" (click)="ownerInfo('manufacture')" padding-top="" src="assets/img/manufacture-gray-01.svg" style="width:35px; padding-top: 0px;">
           </div>
         </ion-col>
 
         <ion-col center text-left>
           <div class="home-button owner-c">
-            <img padding-bottom="" padding-top="" src="assets/img/trust-gray.svg" style="width:35px; padding-top: 0px;">
+            <img padding-bottom=""  padding-top="" src="assets/img/trust-gray.svg" style="width:35px; padding-top: 0px;">
           </div>
         </ion-col>
       </ion-row>
@@ -41,7 +42,6 @@
       <ion-grid class="grid" margin-top="" padding-top="">
 
         <ion-row class="row" padding-top="">
-
             <div class="home-button">
               <img padding-bottom="" padding-top="" src="assets/img/gray_qr.png" style="width:10px" >
             </div>
@@ -51,6 +51,7 @@
             </div>
         </ion-row>
       </ion-grid>
+
     </shrinking-segment-header>
 
     <ion-toolbar color="light" mode="md">
@@ -66,35 +67,36 @@
         </ion-segment-button> -->
       </ion-segment>
     </ion-toolbar>
-
 </ion-header>
 
 <ion-content fullscreen #myContent>
-
     <div [ngSwitch]="section" style="margin-top:30px;">
-
       <ion-list *ngSwitchCase="'one'" style="margin-top:30px;margin-bottom: 2px">
         <ion-card padding class="product-history-card font-15">
         <ion-row>
           <ion-col col-6> <b> Origin :</b></ion-col>
           <ion-col col-6> {{origin}} </ion-col>
-          </ion-row>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6> <b> Date :</b></ion-col>
+          <ion-col col-6> {{productTime | date:'dd-MM-yy HH:mm'}} </ion-col>
+        </ion-row>
          
         </ion-card>
-        <ion-card padding class="product-history-card font-15" *ngFor="let data of dataList">
+        <ion-card padding class="product-history-card font-15" *ngFor="let data of dataItem">
           <ion-row>
                 <ion-col col-6> <b>Date:</b> </ion-col>
-               <ion-col col-6>  {{data.date | date:'dd-MM-yy HH:mm'}}</ion-col>
+               <ion-col col-6>  {{data.data.asset.time | date:'dd-MM-yy HH:mm'}}</ion-col>
             </ion-row>
             <ion-row>
                 <ion-col col-6><b> Location: </b> </ion-col>
-               <ion-col col-6>   {{data.location}}</ion-col>
+               <ion-col col-6>   {{data.data.asset.location}}</ion-col>
             </ion-row>
-
-            <!--  <div>Date: {{data.date | date:'dd-MM-yy HH:mm'}}</div>
-             <div>Location: {{data.location}}</div> -->
+            <ion-row>
+                <ion-col col-6><b> State: </b> </ion-col>
+               <ion-col col-6>   {{data.data.asset.state}}</ion-col>
+            </ion-row>
         </ion-card>
-
       </ion-list>
 
       <ion-list *ngSwitchCase="'two'">
@@ -105,15 +107,11 @@
                <ion-col col-6>  {{data.value}}</ion-col>
             </ion-row>
               <br>
-          </div>
-         
-         <div >
-              
-          </div>
-         
-        </ion-card>
-    
-      </ion-list>
+          </div>         
+         <div >              
+        </div>         
+      </ion-card>    
+    </ion-list>
 
      
 

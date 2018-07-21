@@ -49,7 +49,7 @@ submitted = false;
    //                   duration: 5000
    //              });
    //              toast.present();
-   //              this.navCtrl.setRoot(LoginPage); 
+                this.navCtrl.setRoot(LoginPage); 
    //            }else{
    //               loading.dismiss();
    //              let toast = this.toastCtrl.create({

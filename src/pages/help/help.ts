@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SetupService } from '../../services/setup.service';
-import { NavController,NavParams,LoadingController,Platform,ToastController,ViewController,ActionSheetController,ModalController} from 'ionic-angular';
+import { NavController,NavParams,LoadingController,Platform,ToastController,ActionSheetController,ModalController} from 'ionic-angular';
 import { ReportappModalPage} from '../../pages/reportapp-modal/reportapp-modal';
 /**
  * Generated class for the HelpPage page.
@@ -36,7 +36,7 @@ export class HelpPage {
                 // modal.overlay['subscribe']((z) => {
                 //   console.log(JSON.stringify(z));
                 // })
-                const testComp = modal.overlay['instance'] as ReportappModalPage;
+               // const testComp = modal.overlay['instance'] as ReportappModalPage;
                 // testComp.feedbackSubmit.subscribe(() => {
                 //   alert(1);
                 // })

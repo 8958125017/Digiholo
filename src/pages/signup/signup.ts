@@ -1,22 +1,24 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { FormsModule, FormControl, FormBuilder, Validators, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import { NavController, NavParams,AlertController,LoadingController,MenuController,ToastController} from 'ionic-angular';
+import {  FormControl, FormBuilder, Validators, FormGroup} from '@angular/forms';
+import { NavController, NavParams,AlertController,Platform,LoadingController,MenuController,ToastController} from 'ionic-angular';
 import { UserData } from '../../providers/user-data';
-import { UserOptions,SignUpDetails } from '../../interfaces/user-options';
-import { SetupService } from '../../services/setup.service' 
+import { SetupService } from '../../services/setup.service'; 
 import { LoginPage } from '../../pages/login/login';
-
-
-
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { Http, Headers } from '@angular/http';
+import { OtpReceivePage } from '../otp-receive/otp-receive';
+import { Network } from '@ionic-native/network';
+import 'rxjs/add/operator/map';
+declare var SMS:any;
+declare var document:any;
 @Component({
   selector: 'page-user',
   templateUrl: 'signup.html'
 })
 export class SignupPage {
+  mobnumPattern = "^((\\+91-?)|0)?[0-9]{10}$"; 
   public userInfo:any;
   signupForm: FormGroup;
-  signup1: UserOptions = { username: '', password: '' };
   signupDetail: any = { 
                   userName: '',  
                   email: '',                 
@@ -27,16 +29,26 @@ export class SignupPage {
   submitted = false;
   responseData:any;
 
-  constructor(public navCtrl: NavController,private fb: FormBuilder,public loadingCtrl: LoadingController,public userData: UserData,public alertCtrl: AlertController,public menuCtrl: MenuController, public navParams: NavParams,public _setupService: SetupService,public toastCtrl: ToastController) {
+  otp='';
+  mobile='';
+
+  constructor(public platform:Platform,
+    public androidPermissions: AndroidPermissions,
+    public http:Http,public navCtrl: NavController,private network: Network,private fb: FormBuilder,public loadingCtrl: LoadingController,public userData: UserData,public alertCtrl: AlertController,public menuCtrl: MenuController, public navParams: NavParams,public _setupService: SetupService,public toastCtrl: ToastController) {
+   let backAction =  platform.registerBackButtonAction(() => {        
+          this.navCtrl.pop();
+          backAction();
+        },2)
   }
 
   signUpFormInit(){
             this.signupForm = this.fb.group({
-                  'userName': new FormControl('', Validators.required),
-                  'email': new FormControl('', Validators.required),
-                  'password': new FormControl('', Validators.required),
+                  'userName': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z]{3,32}$/)])),
+                  'email': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z][-_.a-zA-Z0-9]{2,29}\@((\[[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,15}|[0-9]{1,3})(\]?)$/)])),
+                  'password': new FormControl('',Validators.compose([Validators.required,Validators.minLength(6), Validators.maxLength(16),Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,100})/)])),
                   'confirmPassword': new FormControl('', Validators.required),
-                  'contactNumber': new FormControl('', Validators.required)
+                  'contactNumber': new FormControl('', Validators.required),
+                  // 'contactNumber': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^((\\+91-?)|0)?[0-9]{10}$/)])),
               }, { validator: this.matchingPasswords('password', 'confirmPassword') });
           }
 
@@ -59,110 +71,33 @@ export class SignupPage {
   
   onSignup(){         
       let loading = this.loadingCtrl.create({
-       content: 'Logging please wait...'
+       content: 'Sign up please wait...',
+        dismissOnPageChange: true,
+        showBackdrop: true,
+        duration:15000,
+        enableBackdropDismiss: true
       }); 
         loading.present();
         let postData ={
                                     userName : this.signupDetail.userName,
-                                    email: this.signupDetail.email,
+                                    email: this.signupDetail.email.toLowerCase(),
                                     contactNumber:this.signupDetail.contactNumber,
                                     password:this.signupDetail.password
-                                };
-    loading.dismiss();
+                                };   
     console.log("postData  = ="+JSON.stringify(postData));
     const url = this._setupService.basePath + '/multichain/user/customerUser';
-     this._setupService.PostRequestUnautorized(url,postData).subscribe((response)=>{
-     loading.dismiss(); 
+     this._setupService.PostRequestUnautorized(url,postData).subscribe((response)=>{       
+       console.log("response = = "+JSON.stringify(response));
+        loading.dismiss(); 
       if(response[0].json.responseCode== 200){
+          localStorage.setItem('UserDetaisAfterSignup',JSON.stringify(response));         
            this.responseData = response;      
            this.userInfo=response[0].json.data;
-          //localStorage.setItem('signUp',JSON.stringify(this.responseData));
-         // const response=JSON.parse(localStorage.getItem('signUp'));                  
-           let toast = this.toastCtrl.create({
-                     message: 'OTP sent to your mobile no',
-                     showCloseButton: true,
-                     closeButtonText: 'Ok',
-                     duration: 5000
-                });
-                toast.present(); 
-      let prompt = this.alertCtrl.create({
-      title: 'One Time Password',      
-      inputs: [
-        {          
-          name: 'otp',
-          type: 'password',
-          placeholder: 'One Time Password'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            let toast = this.toastCtrl.create({
-                     message: 'account created please login and verify !!',
-                     showCloseButton: true,
-                     closeButtonText: 'Ok',
-                     duration: 5000
-                });
-                toast.present();
-                console.log("data "+data);
-                this.navCtrl.setRoot(LoginPage); 
-          }
-        },
-        {
-          text: 'submit',
-          handler: data => {
-            if(!data.otp){
+           this.navCtrl.push(OtpReceivePage);  
+    }else{              
+         this.responseData = response;           
               let toast = this.toastCtrl.create({
-                     message: 'Otp should be required please signUp retry',
-                     showCloseButton: true,
-                     closeButtonText: 'Ok',
-                     duration: 5000
-                });
-               
-                toast.present();
-            }
-
-              else{
-                 let loading = this.loadingCtrl.create({
-                 content: 'verifying otp...'
-               });
-               let postData={
-                   userName:this.userInfo.userName,
-                   contactNumber:this.userInfo.contactNumber,
-                   otp:this.userInfo.otp
-                 }
-
-               loading.present();
-                const url2 = this._setupService.basePath + 'multichain/user/verifyOtp';
-                 this._setupService.PostRequestUnautorized(url2,postData).subscribe((response) => {  
-                loading.dismiss(); 
-                if(response.responseCode== 200){
-                     let toast = this.toastCtrl.create({
-                     message: 'SignUp successfully',
-                     showCloseButton: true,
-                     closeButtonText: 'Ok',
-                     duration: 5000
-                 });               
-                toast.present();
-                this.navCtrl.setRoot(LoginPage);
-                }             
-             });
-            }      
-          }
-        }
-      ],
-      enableBackdropDismiss: false
-    });
-    prompt.present();      
-         
-     }else{
-       
-       loading.dismiss();
-          this.responseData = response;
-           
-              let toast = this.toastCtrl.create({
-                     message: this.responseData.message,
+                     message: response[0].json.responseMessage,
                      showCloseButton: true,
                      closeButtonText: 'Ok',
                      duration: 5000
@@ -177,8 +112,20 @@ export class SignupPage {
     this.navCtrl.setRoot(LoginPage);
   }
      ionViewDidEnter() {
-    // the root left menu should be disabled on the tutorial page
-      this.menuCtrl.enable(false);
+      //   this.network.onConnect().subscribe(data => {
+        
+      //   }, error => console.error(error));
+ 
+      // this.network.onDisconnect().subscribe(data => {
+      //   let alert = this.alertCtrl.create({
+      //     title: 'Network was disconnected :-(',
+      //     subTitle: 'Please check your connection. And try again',
+      //     buttons: ['OK']
+      //   });
+      //   alert.present();
+      // }, error => console.error(error));
+        // the root left menu should be disabled on the tutorial page
+          this.menuCtrl.enable(false);
     }
    ionViewWillLeave() {
      // enable the root left menu when leaving the tutorial page

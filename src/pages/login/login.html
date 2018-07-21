@@ -7,11 +7,29 @@
 	<ion-row class="logo" text-center>
 		 <ion-col col-12 style="    font-size: 2em;    margin-top: 38px;    color: #3896ea;" >
 		 	<ion-icon name="qr-scanner" class="icon-chat-user" (click)="scanProduct()"></ion-icon></ion-col>
-		 <ion-col col-12><h3 class="text_Color"><strong >Sign In</strong></h3></ion-col>
+		 <ion-col col-12><h3 class="text_Color"><strong >Login with</strong></h3></ion-col>
 	</ion-row>
-	<form [formGroup]="loginForm">
-		<ion-list no-lines class="form-input-fields">
+	<!-- <ion-row text-center>
+		 <ion-col col-12 style="font-size: 4em;color: #3896ea;" >
+		 	<ion-icon name="logo-facebook" class="icon-chat-user" (click)="loginWithFB()"></ion-icon></ion-col>
 		
+	</ion-row> -->
+ <!--   <ion-row text-center>
+		 <ion-col col-12>
+		 	<b>or</b>
+		 </ion-col>
+	</ion-row> -->
+	<!-- <ion-card *ngIf="userData">
+    <ion-card-header>{{ userData.username }}</ion-card-header>
+    <img [src]="userData.picture" />
+    <ion-card-content>
+      <p>Email: {{ userData.email }}</p>
+      <p>First Name: {{ userData.first_name }}</p>
+    </ion-card-content>
+
+  </ion-card> -->
+	<form [formGroup]="loginForm">
+		<ion-list no-lines class="form-input-fields">		
              
          <ion-item  [ngClass]="{'error-border':!loginForm.controls.email.valid && loginForm.controls.email.dirty}">
 		    <ion-label floating>Email</ion-label>

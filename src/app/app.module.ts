@@ -32,7 +32,18 @@ import { StorelocationPage } from '../pages/storelocation/storelocation';
 import { HelpPage } from '../pages/help/help';
 import { ProfilePage } from '../pages/profile/profile';
 import { OwnedproductinfoPage} from '../pages/ownedproductinfo/ownedproductinfo';
-import { TransferownershipPage } from '../pages/transferownership/transferownership'
+import { TransferownershipPage } from '../pages/transferownership/transferownership';
+import { OtpReceivePage} from '../pages/otp-receive/otp-receive';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { StorelocatiolistPage} from '../pages/storelocatiolist/storelocatiolist';
+import { GmapPage } from '../pages/gmap/gmap';
+import { AgmCoreModule } from '@agm/core';
+import { Geolocation } from '@ionic-native/geolocation';
+import { Camera } from '@ionic-native/camera';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { Crop } from '@ionic-native/crop';
+import { Network } from '@ionic-native/network';
+//import { Facebook } from '@ionic-native/facebook';
 @NgModule({
   declarations: [
     ConferenceApp,
@@ -55,9 +66,15 @@ import { TransferownershipPage } from '../pages/transferownership/transferowners
     ProfilePage,
     OwnedproductinfoPage,
     TransferownershipPage,
-    ReportappModalPage
+    ReportappModalPage,
+    OtpReceivePage,
+    StorelocatiolistPage,
+    GmapPage,    
   ],
   imports: [
+  AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCS-JPv-UnylrjSuPAgTEolYkYhMBjOCvs',libraries: ["places"]
+    }),
     BrowserModule,
     HttpModule,
     FormsModule,
@@ -82,7 +99,10 @@ import { TransferownershipPage } from '../pages/transferownership/transferowners
         { component: StorelocationPage, name: 'StorelocationPage', segment: 'storelocation'}, 
         { component: ProfilePage, name: 'ProfilePage', segment: 'profile'}, 
         { component: OwnedproductinfoPage, name: 'OwnedproductinfoPage', segment: 'ownedproductinfo'},
-        { component: TransferownershipPage, name: 'TransferownershipPage', segment: 'transferownership'},  
+        { component: TransferownershipPage, name: 'TransferownershipPage', segment: 'transferownership'}, 
+        { component: OtpReceivePage, name: 'OtpReceivePage', segment: 'OtpReceive'},  
+        { component: StorelocatiolistPage, name: 'StorelocatiolistPage', segment: 'storelocatiolist'}, 
+        { component: GmapPage, name: 'GmapPage', segment: 'gmap'}       
 
       ]
     }),
@@ -109,13 +129,18 @@ import { TransferownershipPage } from '../pages/transferownership/transferowners
     ProfilePage,
     OwnedproductinfoPage,
     TransferownershipPage,
-    ReportappModalPage
+    ReportappModalPage,
+    OtpReceivePage,
+    StorelocatiolistPage,
+    GmapPage
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     ConferenceData,BarcodeScanner,SocialSharing,
-    UserData,StatusBar,SetupService,
-    InAppBrowser,
+    UserData,StatusBar,SetupService,AndroidPermissions,
+    InAppBrowser,Geolocation,
+    Camera,Crop,Network,
+    FileTransfer,
     SplashScreen
   ]
 })

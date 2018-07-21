@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+//import { NgForm } from '@angular/forms';
 import { NavController, NavParams,AlertController,MenuController,ToastController,LoadingController } from 'ionic-angular';
 import { Otpvalue,UserEmailId } from '../../interfaces/user-options';
 import { LoginPage } from '../login/login';
 import { SignupPage} from '../signup/signup';
-import { ChangepasswordPage } from '../changepassword/changepassword';
+//import { ChangepasswordPage } from '../changepassword/changepassword';
 import { SetupService } from '../../services/setup.service'
 /**
  * Generated class for the ForgotpasswordPage page.

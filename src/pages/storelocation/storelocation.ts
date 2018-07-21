@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SetupService } from '../../services/setup.service'
-import { FormsModule, FormControl, FormBuilder, Validators, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {  FormControl, FormBuilder, Validators, FormGroup} from '@angular/forms';
+import { StorelocatiolistPage} from '../../pages/storelocatiolist/storelocatiolist';
 /**
  * Generated class for the StorelocationPage page.
  *
@@ -29,20 +30,9 @@ export class StorelocationPage {
         });
     }
 
- getStoreLocations(){ 
- 	 const url = this._setupService.basePath + 'api/login';
-          this._setupService.PostRequest(url , this.storeInfo)
-        .subscribe((response) => {     
-          if(response[0].json.status==200){
-            
-              
-          }else{     
-              this.storeLocationForm.reset();
-                
-             
-          }
-       
-        })
+ getStoreLocations(){
+ var brandName= this.storeInfo.brand;
+ 	    this.navCtrl.push(StorelocatiolistPage, { 'brands': brandName});
     }
  
   ngOnInit() {     
