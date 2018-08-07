@@ -1,6 +1,7 @@
 
 import { Injectable } from '@angular/core';
-
+import { Network } from '@ionic-native/network';
+import { AlertController, Events } from 'ionic-angular';
 import { Http, Response, RequestOptions, Headers, Request, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
@@ -10,13 +11,19 @@ import 'rxjs/add/operator/map';
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
+
+export enum ConnectionStatusEnum {
+    Online,
+    Offline
+}
 @Injectable()
 export class SetupService {
       public requestoptions: RequestOptions;
       public basePath: string;      
-    
-      constructor(public http: Http,) {   
+      previousStatus:any;
+      constructor(public http: Http,public network: Network,public eventCtrl: Events) {   
         this.http = http;    
+        this.previousStatus = ConnectionStatusEnum.Online;
         this.extarsOnLoad();
       }
 
@@ -112,7 +119,24 @@ export class SetupService {
     consoleFun(a?, b?, c?, d?, f?, g?): void {
         // console.log(a, b, c, d, f, g);
     }
-        
+
+
+       public initializeNetworkEvents(): void {
+        this.network.onDisconnect().subscribe(() => {
+            if (this.previousStatus === ConnectionStatusEnum.Online) {
+                this.eventCtrl.publish('network:offline');
+            }
+            this.previousStatus = ConnectionStatusEnum.Offline;
+        });
+        this.network.onConnect().subscribe(() => {
+            if (this.previousStatus === ConnectionStatusEnum.Offline) {
+                this.eventCtrl.publish('network:online');
+            }
+            this.previousStatus = ConnectionStatusEnum.Online;
+        });
     }
+
+        
+}
 
 

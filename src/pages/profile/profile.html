@@ -28,12 +28,12 @@
      <ion-list>
 
 		  <ion-item  [ngClass]="{'error-border':!profileUpdateForm.controls.userName.valid && profileUpdateForm.controls.userName.dirty}">
-		    <ion-label floating>Username</ion-label>
+		    <ion-label floating>Name</ion-label>
 		    <ion-input [(ngModel)]="userInfo.userName" formControlName="userName" type="text" required></ion-input> 
 		   <!-- </div> -->
 		  </ion-item>
         <ion-item *ngIf="profileUpdateForm.controls.userName.hasError('required') && profileUpdateForm.controls.userName.dirty">
-             <p style="color:red;">Sorry, field user name is required!</p>
+             <p style="color:red;">Name is required!</p>
         </ion-item>
        
       <ion-item  [ngClass]="{'error-border':!profileUpdateForm.controls.phoneNo.valid && profileUpdateForm.controls.phoneNo.dirty}">

@@ -21,6 +21,8 @@
     <preference name="SplashScreenDelay" value="100000" />
     <preference name="SplashScreenSpinnerColor" value="#0099c3" />
     <preference name="loadUrlTimeoutValue" value="700000" />
+    <preference name="orientation" value="portrait" />
+    <preference name="SplashStatusBarBackgroundColor" value="#0000FF" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -60,4 +62,5 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-crop" spec="^0.4.0" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
 </widget>

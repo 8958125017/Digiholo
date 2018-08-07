@@ -4,6 +4,8 @@ import { SetupService } from '../../services/setup.service'
 import {  FormControl, FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { OwnedproductinfoPage } from'../../pages/ownedproductinfo/ownedproductinfo';
 import { Network } from '@ionic-native/network';
+import { DashboardPage } from '../dashboard/dashboard';
+import { HomePage } from '../home/home';
 /**
  * Generated class for the TransferownershipPage page.
  *
@@ -26,9 +28,11 @@ userAdd:any;
 productName:any;
 streamKey:any;
 strKey:any;
+ netStatus:any;
   constructor(platform:Platform,public navCtrl: NavController,public alertCtrl: AlertController, private network: Network,public toastCtrl: ToastController,private fb: FormBuilder,public _setupService: SetupService, public navParams: NavParams) {
        this.userOwnerData=JSON.parse(localStorage.getItem('tempOwnerData')); 
        this.user=JSON.parse(localStorage.getItem('logindetail'));
+        this.netStatus=localStorage.getItem('NetworkStatus'); 
           if(this.user)            {
             var res=JSON.parse(this.user[0].json._body);
             this.userAdd=res.data.userAddress;
@@ -37,7 +41,7 @@ strKey:any;
          this.productName = this.navParams.get('getOwnproductId');
          this.streamKey = this.navParams.get('getOwnstremKey');       
          this.strKey =  this.streamKey
-     let backAction =  platform.registerBackButtonAction(() => {        
+        let backAction =  platform.registerBackButtonAction(() => {        
               this.navCtrl.pop();
               backAction();
             },2)
@@ -51,16 +55,19 @@ strKey:any;
     }
 
   transferOwnership(){ 
+  //  console.log("this.userOwnerData = = "+JSON.stringify(this.userOwnerData));
+     if(this.netStatus=="offline")    {
+         this.navCtrl.push(HomePage);
+     } else{      
     let postData={
           "userAddress":this.userAdd,
-          "contactNumber":this.productInfo.data,
+          "contactNumber":"+91"+this.productInfo.data,
           "productName":this.productName,
           "productKeyName":this.streamKey,
           "data":this.userOwnerData
     }
 
-   console.log("postData = = "+JSON.stringify(postData));
- 	 const url = this._setupService.basePath + '/multichain/user/transferOwnerShip'
+ 	 const url = this._setupService.basePath + '/multichain/product/publisherSTreamItem'
           this._setupService.PostRequest(url , postData)
         .subscribe((response) => {    
         var res=JSON.parse(response[0].json._body); 
@@ -73,7 +80,7 @@ strKey:any;
                 });
                 toast.present(); 
                this.transferOwnerShipForm.reset();
-               this.navCtrl.push(OwnedproductinfoPage, { 'getOwnproductId': this.productName,'getOwnstremKey': this.streamKey}); 
+               this.navCtrl.setRoot(DashboardPage);
           }else{     
               this.transferOwnerShipForm.reset();
                 let toast = this.toastCtrl.create({
@@ -87,6 +94,7 @@ strKey:any;
           }
        
         })
+      }
     }
   ionViewDidLoad() {
     // this.network.onConnect().subscribe(data => {      

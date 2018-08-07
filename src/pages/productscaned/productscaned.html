@@ -30,16 +30,38 @@
       <ion-list *ngSwitchCase="'one'" style="margin-top:30px;margin-bottom: 2px">
         <div *ngIf="!noOwnerData">
         <ion-card padding class="product-history-card font-15" *ngFor="let ownerList of ownerListdata">
-          <ion-row >
-               <ion-col col-6 text-center (click)="getownedProductInfo(ownerList.productName,ownerList.productKeyName
-)"> <b> {{ownerList.productName}}</b> </ion-col>
-               <ion-col col-6 text-center (click)="showConfirm(ownerList.productName,ownerList.productKeyName)"><b> Share</b></ion-col>
+          
+          <ion-row *ngIf="ownerList.status=='active'">
+            <ion-col col-6 text-center (click)="getownedProductInfo(ownerList.productName,ownerList.productKeyName)"> 
+              <b> {{ownerList.productName}}</b> 
+            </ion-col>
+               <ion-col col-6 text-center (click)="showConfirm(ownerList.productName,ownerList.productKeyName)">
+                <b> Share</b>
+              </ion-col>
             </ion-row> 
-          </ion-card></div>
+            
+            <ion-row *ngIf="ownerList.status=='deactivate'" style="background-color: red">
+            <ion-col col-6 text-center (click)="getownedProductInfowithDetails(ownerList.productName,ownerList.productKeyName)"> 
+              <b> {{ownerList.productName}}</b> 
+            </ion-col>
+               <ion-col col-6 text-center (click)="showConfirm(ownerList.productName,ownerList.productKeyName)">
+                <span> Share</span>
+              </ion-col>
+              
+            </ion-row>
+            <ion-row *ngIf="ownerList.status=='active'">
+                 <span style="margin-left: 254px"> Shared</span>
+             </ion-row>
+             <ion-row *ngIf="ownerList.status=='deactivate'">
+                 <span style="margin-left: 213px"> Not Shared</span>
+             </ion-row>
+             <!-- <b style="margin-left: 253px;position: fixed;">Shared</b> -->
+          </ion-card>
+      </div>
           <br>
-          <div *ngIf="noOwnerData">
-           <b (click)="getownedProductInfo()" style="margin-left: 137px;">No data Found</b> 
-          </div>
+      <div *ngIf="noOwnerData">
+           <b style="margin-left: 137px;">No data Found</b> 
+      </div>
 
      
 
@@ -48,14 +70,16 @@
       <ion-list *ngSwitchCase="'two'">
         <div *ngIf="!noScanedData">
         <ion-card padding class="product-history-card font-15" *ngFor="let scanedList of scanedListdata">
-          
-               <ion-row >
-                <ion-col col-6  (click)="getownedProductInfo(scanedList.productName,scanedList.productKeyName
+        <ion-row >
+             <ion-col col-6  (click)="getownedProductInfowithDetails(scanedList.productName,scanedList.productKeyName)"> 
+                <b>{{scanedList.productName}}</b>
+             </ion-col>
+            <ion-col col-6 text-center (click)="showConfirm(scanedList.productName,scanedList.productKeyName)">
+              <b> Share</b>
+            </ion-col>
+        </ion-row>
 
-)"> <b>{{scanedList.productName}}</b> </ion-col>
-                <ion-col col-6 text-center (click)="showConfirm(scanedList.productName,scanedList.productKeyName)"><b> Share</b></ion-col>
-            </ion-row>      
-              <br>
+         <br>
         
          
          

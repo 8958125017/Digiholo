@@ -20,9 +20,12 @@
         <ion-input [(ngModel)]="otpVerifyDetail.otp" formControlName="otp" type="text" required></ion-input> 
        <!-- </div> -->
       </ion-item>
-      <ion-item *ngIf="otpForm.controls.email.hasError('required') && otpForm.controls.email.dirty">
-             <p style="color:red;">Otp is required!</p>
+        <ion-item *ngIf="otpForm.controls.otp.hasError('required') && otpForm.controls.otp.dirty">
+             <p style="color:red;">OTP is required!</p>
         </ion-item>
+     <!--  <ion-item *ngIf="otpForm.controls.email.hasError('required') && otpForm.controls.email.dirty">
+             <p style="color:red;">Otp is required!</p>
+        </ion-item> -->
        <button class="button-backcolor" ion-button (click)="verifyOTP()"  [disabled]="!otpForm.valid" type="submit" block>Verify</button>
        <!-- <button ion-button (click)="checkPermission()">Receive SMS</button> -->
     </form>

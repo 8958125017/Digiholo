@@ -20,25 +20,67 @@
       <form [formGroup]="reportForm">
     <ion-item>
     <ion-label color="primary" floating>Name</ion-label>
-    <ion-input formControlName="name" [(ngModel)]="reportDetails.name"></ion-input>
-  </ion-item>
-  <ion-item>
+     <ion-input formControlName="name" [(ngModel)]="reportDetails.name"></ion-input>
+    </ion-item>
+    <ion-item class="small" *ngIf="!reportForm.controls['name'].valid &&reportForm.controls ['name'].dirty">
+            <span *ngIf="reportForm.controls['name'].errors['required']">
+                <p style="color:red;">User Name cannot be left blank</p>
+            </span>
+    </ion-item>
+    
+    <ion-item>
     <ion-label color="primary" floating>Location</ion-label>
-    <ion-input formControlName="location" [(ngModel)]="reportDetails.location"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label color="primary" floating>Phone No</ion-label>
+     <ion-input formControlName="location" [(ngModel)]="reportDetails.location"></ion-input>
+     </ion-item>
+      <ion-item class="small" *ngIf="!reportForm.controls['location'].valid &&reportForm.controls ['location'].dirty">
+            <span *ngIf="reportForm.controls['location'].errors['required']">
+                <p style="color:red;">location cannot be left blank</p>
+            </span>
+      </ion-item>
+
+
+
+   <ion-item>
+    <ion-label color="primary" floating>Contact Number</ion-label>
     <ion-input formControlName="mobileNo" [(ngModel)]="reportDetails.mobileNo"></ion-input>
+   </ion-item>
+   <ion-item *ngIf="!reportForm.controls['mobileNo'].valid &&reportForm.controls ['mobileNo'].dirty">
+            <span *ngIf="reportForm.controls['mobileNo'].errors['required']">
+                <p style="color:red;">Contact Number cannot be left blank</p>
+            </span>
+            <span *ngIf="reportForm.controls['mobileNo'].errors['minlength']">
+                 <p style="color:red;">contact Number must be atleast 10 numbers</p>
+             </span>
+             <span *ngIf="reportForm.controls['mobileNo'].errors['maxlength']">
+                 <p style="color:red;">contact Number should not be greater then 10.</p>
+             </span>
+          
   </ion-item>
+
    <ion-item>
     <ion-label color="primary" floating>Email Id</ion-label>
     <ion-input formControlName="email" [(ngModel)]="reportDetails.email"></ion-input>
    </ion-item>
+   <ion-item class="small" *ngIf="!reportForm.controls['email'].valid&&reportForm.controls['email'].dirty">
+            <span *ngIf="reportForm.controls['email'].errors['required']">
+              <p style="color:red;">Email cannot be left blank</p>
+            </span>
+            <span *ngIf="reportForm.controls['email'].errors['pattern']">
+              <p style="color:red;">Email address format is incorrect</p>
+            </span>
+  </ion-item>
+
    <ion-item>
     <ion-label color="primary" floating>Problem</ion-label>
      <ion-textarea  
       name="note" autocomplete="on" autocorrect="on" formControlName="problem" [(ngModel)]="reportDetails.problem"></ion-textarea>
     </ion-item>
-    <button ion-button (click)="sendFeedBack()">Report</button>
+     <ion-item class="small" *ngIf="!reportForm.controls['problem'].valid &&reportForm.controls ['problem'].dirty">
+            <span *ngIf="reportForm.controls['problem'].errors['required']">
+                <p style="color:red;">Problem cannot be left blank</p>
+            </span>
+     </ion-item>
+
+    <button ion-button (click)="sendFeedBack()" [disabled]="!reportForm.valid">Report</button>
   </form>
     </ion-content>

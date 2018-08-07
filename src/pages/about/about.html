@@ -4,19 +4,15 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>About {{strKey ? strKey:'NA'}}</ion-title>
+    <ion-title>About  {{strKey ? strKey:'NA'}}</ion-title>
   </ion-navbar>
-        <ion-title class="primary-color">
-        <div>
-         <!--  Product:   {{qrCode | slice:0:24}} -->
-          </div>
-        </ion-title>
+      
  
     <shrinking-segment-header [scrollArea]="myContent" headerHeight="150">
 
        <ion-row class="padtop-14" text-center>
         <ion-col col-12 class="font-18">  Manufacturer: {{productName}}</ion-col>
-        <ion-col col-12 class="font-18">Date of Manufacture: {{productTime | date:'dd-MM-yy HH:mm'}}</ion-col>
+        <ion-col col-12 class="font-18">Date of Manufacture: {{productTime}}</ion-col>
       </ion-row>
       <ion-grid>
 
@@ -38,7 +34,7 @@
 
         <ion-col center text-left>
           <div class="home-button owner-c">
-            <img padding-bottom=""  padding-top="" src="assets/img/trust-gray.svg" style="width:35px; padding-top: 0px;">
+            <img padding-bottom=""  (click)="ownerInfo('warantty')" padding-top="" src="assets/img/trust-gray.svg" style="width:35px; padding-top: 0px;">
           </div>
         </ion-col>
       </ion-row>
@@ -88,18 +84,18 @@
           </ion-row>
          
         </ion-card>
-         <ion-card padding class="product-history-card font-15" *ngFor="let data of dataItem">
+         <ion-card padding class="product-history-card font-15" *ngFor="let data of dataList">
           <ion-row>
-                <ion-col col-6> <b>Date:</b> </ion-col>
-               <ion-col col-6>  {{data.data.asset.time | date:'dd-MM-yy HH:mm'}}</ion-col>
-            </ion-row>
-            <ion-row>
                 <ion-col col-6><b> Location: </b> </ion-col>
-               <ion-col col-6>   {{data.data.asset.location}}</ion-col>
+               <ion-col col-6>   {{data.location}}</ion-col>
             </ion-row>
             <ion-row>
                 <ion-col col-6><b> State: </b> </ion-col>
-               <ion-col col-6>   {{data.data.asset.state}}</ion-col>
+               <ion-col col-6>   {{data.state}}</ion-col>
+            </ion-row>
+             <ion-row>
+                <ion-col col-4> <b>Date:</b> </ion-col>
+               <ion-col col-7>  {{data.blocktime}}</ion-col>
             </ion-row>
         </ion-card>
 
@@ -133,11 +129,11 @@
     </div>
 
 </ion-content>
-<!-- <ion-footer>
+<ion-footer>
   <ion-toolbar class="product-page-header">
    <ion-row class="primary-color">
               <ion-col col-6 text-center (click)="showConfirm()"><b> Share</b></ion-col>
                <ion-col col-6 text-center (click)="openModal()">  Report</ion-col>
             </ion-row>
   </ion-toolbar>
-</ion-footer> -->
+</ion-footer>

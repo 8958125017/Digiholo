@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage,NavController,Platform,AlertController,NavParams,ToastController,LoadingController} from 'ionic-angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 
-import {Http, Headers } from '@angular/http';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import { SetupService } from '../../services/setup.service'
 import { LoginPage } from '../../pages/login/login';

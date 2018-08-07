@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  FormControl, FormBuilder, Validators, FormGroup} from '@angular/forms';
+import { FormControl, FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { NavController, NavParams,AlertController,Platform,LoadingController,MenuController,ToastController} from 'ionic-angular';
 import { UserData } from '../../providers/user-data';
 import { SetupService } from '../../services/setup.service'; 
@@ -7,10 +7,9 @@ import { LoginPage } from '../../pages/login/login';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Http, Headers } from '@angular/http';
 import { OtpReceivePage } from '../otp-receive/otp-receive';
-import { Network } from '@ionic-native/network';
 import 'rxjs/add/operator/map';
-declare var SMS:any;
-declare var document:any;
+import { HomePage } from '../home/home';
+
 @Component({
   selector: 'page-user',
   templateUrl: 'signup.html'
@@ -31,24 +30,37 @@ export class SignupPage {
 
   otp='';
   mobile='';
-
-  constructor(public platform:Platform,
-    public androidPermissions: AndroidPermissions,
-    public http:Http,public navCtrl: NavController,private network: Network,private fb: FormBuilder,public loadingCtrl: LoadingController,public userData: UserData,public alertCtrl: AlertController,public menuCtrl: MenuController, public navParams: NavParams,public _setupService: SetupService,public toastCtrl: ToastController) {
-   let backAction =  platform.registerBackButtonAction(() => {        
-          this.navCtrl.pop();
-          backAction();
-        },2)
+ netStatus:any;
+  constructor(
+              public platform:Platform,
+              public androidPermissions: AndroidPermissions,
+              public http:Http,
+              public navCtrl: NavController,
+              private fb: FormBuilder,
+              public loadingCtrl: LoadingController,
+              public userData: UserData,
+              public alertCtrl: AlertController,
+              public menuCtrl: MenuController, 
+              public navParams: NavParams,
+              public _setupService: SetupService,
+              public toastCtrl: ToastController
+              ) {
+                 let backAction =  platform.registerBackButtonAction(() => {        
+                    this.navCtrl.pop();
+                    backAction();
+                  },2)
+                  this.netStatus=localStorage.getItem('NetworkStatus'); 
   }
 
   signUpFormInit(){
             this.signupForm = this.fb.group({
-                  'userName': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z]{3,32}$/)])),
+                  'userName': new FormControl('',Validators.compose([Validators.required])),
                   'email': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z][-_.a-zA-Z0-9]{2,29}\@((\[[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,15}|[0-9]{1,3})(\]?)$/)])),
                   'password': new FormControl('',Validators.compose([Validators.required,Validators.minLength(6), Validators.maxLength(16),Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,100})/)])),
                   'confirmPassword': new FormControl('', Validators.required),
-                  'contactNumber': new FormControl('', Validators.required),
-                  // 'contactNumber': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^((\\+91-?)|0)?[0-9]{10}$/)])),
+                  'contactNumber': new FormControl('',Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])),
+                  
+                  
               }, { validator: this.matchingPasswords('password', 'confirmPassword') });
           }
 
@@ -69,7 +81,10 @@ export class SignupPage {
       }
 
   
-  onSignup(){         
+  onSignup(){   
+       if(this.netStatus=="offline")    {
+         this.navCtrl.push(HomePage);
+     } else{      
       let loading = this.loadingCtrl.create({
        content: 'Sign up please wait...',
         dismissOnPageChange: true,
@@ -81,14 +96,13 @@ export class SignupPage {
         let postData ={
                                     userName : this.signupDetail.userName,
                                     email: this.signupDetail.email.toLowerCase(),
-                                    contactNumber:this.signupDetail.contactNumber,
+                                    contactNumber:"+91"+this.signupDetail.contactNumber,
                                     password:this.signupDetail.password
                                 };   
-    console.log("postData  = ="+JSON.stringify(postData));
+    
     const url = this._setupService.basePath + '/multichain/user/customerUser';
      this._setupService.PostRequestUnautorized(url,postData).subscribe((response)=>{       
-       console.log("response = = "+JSON.stringify(response));
-        loading.dismiss(); 
+      loading.dismiss(); 
       if(response[0].json.responseCode== 200){
           localStorage.setItem('UserDetaisAfterSignup',JSON.stringify(response));         
            this.responseData = response;      
@@ -105,28 +119,17 @@ export class SignupPage {
                 toast.present(); 
       }          
     });   
+   }
   }
 
   
   onLogin(){
     this.navCtrl.setRoot(LoginPage);
   }
-     ionViewDidEnter() {
-      //   this.network.onConnect().subscribe(data => {
-        
-      //   }, error => console.error(error));
- 
-      // this.network.onDisconnect().subscribe(data => {
-      //   let alert = this.alertCtrl.create({
-      //     title: 'Network was disconnected :-(',
-      //     subTitle: 'Please check your connection. And try again',
-      //     buttons: ['OK']
-      //   });
-      //   alert.present();
-      // }, error => console.error(error));
-        // the root left menu should be disabled on the tutorial page
+     ionViewDidEnter() {   
           this.menuCtrl.enable(false);
     }
+    
    ionViewWillLeave() {
      // enable the root left menu when leaving the tutorial page
     this.menuCtrl.enable(true);

@@ -71,6 +71,10 @@
             {
               "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -235,6 +239,9 @@
     },
     "cordova-plugin-network-information": {
       "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "io.digiholo.user"
     }
   },
   "dependent_plugins": {},
@@ -570,6 +577,14 @@
       "clobbers": [
         "Connection"
       ]
+    },
+    {
+      "id": "cordova-plugin-statusbar.statusbar",
+      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+      "pluginId": "cordova-plugin-statusbar",
+      "clobbers": [
+        "window.StatusBar"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -589,6 +604,7 @@
     "cordova-plugin-x-socialsharing": "5.4.1",
     "ionic-plugin-keyboard": "2.2.1",
     "phonegap-plugin-barcodescanner": "8.0.0",
-    "cordova-plugin-network-information": "2.0.1"
+    "cordova-plugin-network-information": "2.0.1",
+    "cordova-plugin-statusbar": "2.4.2"
   }
 }

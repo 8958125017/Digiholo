@@ -45,6 +45,13 @@ public data:any[];
   strKey:any;
   ownedDetails:any;
   ownedTime:any;
+  manufactureInfo:any;
+  manufactureDate:any;
+  city:any;
+  country:any;
+  pin:any;
+  state:any;
+  transferTime:any;
     constructor(public navCtrl: NavController,public alertCtrl: AlertController,private modalCtrl: ModalController,private sharingVar: SocialSharing,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public platform:Platform,public navParams: NavParams,public _setupService: SetupService,public loadingCtrl: LoadingController) {
         let backAction =  platform.registerBackButtonAction(() => {        
           this.navCtrl.pop();
@@ -62,7 +69,7 @@ public data:any[];
         // this.strKey=this.navParams.get('stremKey');
         var proName=this.navParams.get('getOwnproductId');
         var streamKey2 = this.navParams.get('getOwnstremKey');
-      this.strKey = streamKey2;
+       this.strKey = streamKey2;
         if(productID&&stremKey){          
           this.getQrscanner(productID,stremKey,this.userAdd);  
         }else if(proName&&streamKey2){
@@ -73,11 +80,8 @@ public data:any[];
 
            getOwnership(productName:any,productKey:any,userAddress:any){
                          let loading = this.loadingCtrl.create({
-                            content: 'please wait...',
-                            dismissOnPageChange: true,
-                            showBackdrop: true,
-                            duration:15000,
-                            enableBackdropDismiss: true
+                            content: 'please wait...',                            
+                            duration:15000
                           });
                          loading.present();
                         let postData={
@@ -85,20 +89,41 @@ public data:any[];
                                    productName:productName,
                                    productKeyName:productKey
                              }
-                       const url = this._setupService.basePath + '/multichain/product/listStreamKeyItems'
+                             
+                       const url = this._setupService.basePath + '/multichain/product/listStreamKeyItem'
                       this._setupService.PostRequestUnautorized(url,postData).subscribe((response)=>{   
-                       loading.dismiss();    
-                       debugger
-                       if(response[0].json.responseCode==200)
+                       loading.dismiss();
+                       debugger    
+                      if(response[0].json.responseCode==200)
                       {  
                         this.dataList = [];  
                         this.dataItem=response[0].json.data;
+                        for(var i=0;i<this.dataItem.length;i++){ 
+                           let objData ={
+                               location:'',
+                               state :'',
+                               blocktime:''                             
+                            };
+                           objData.location = this.dataItem[i].location ? this.dataItem[i].location : '--';
+                           objData.state=this.dataItem[i].state ? this.dataItem[i].state : '--';
+                           var time=this.dataItem[i].blocktime;
+                           objData.blocktime=moment.unix(time/1000).format("DD-MM-YYYY HH:mm:ss");
+                           this.dataList.push(objData);
+                        }
                         var index=this.dataItem.length-1; 
-                        this.ownerstatus=this.dataItem[index].data.asset.status;
-                        this.ownedDetails=this.dataItem[index].data.asset.state;
-                        var time=this.dataItem[index].data.asset.time;                       
-                        this.ownedTime=moment.unix(time/1000).format("YYYY-MM-DD HH:MM:SS");                        
-                        var desc=   this.dataItem[index].data.asset.description;                        
+                        this.ownerstatus=this.dataItem[index].status;
+                        this.ownedDetails=this.dataItem[index].state;
+                        var time=this.dataItem[index].blocktime; 
+                        this.transferTime=moment.unix(time/1000).format("DD-MM-YYYY HH:mm:ss");   
+                        var ownTime=this.dataItem[index].manufacture.date; 
+                        this.ownedTime=moment(ownTime).format("DD-MM-YYYY ");   
+                        this.manufactureInfo=this.dataItem[index].manufacture.companyName; 
+                        this.city=  this.dataItem[index].manufacture.address.city;
+                        this.state=  this.dataItem[index].manufacture.address.state;                        
+                        this.country=  this.dataItem[index].manufacture.address.country;     
+                        this.pin=  this.dataItem[index].manufacture.address.pin;     
+                        this.manufactureDate=this.dataItem[index].manufacture.date;                                                 
+                        var desc=   this.dataItem[index].description;                        
                         for(var key in desc)
                          {      
                           let data={
@@ -106,15 +131,14 @@ public data:any[];
                                    value:desc[key],
                           }
                           this.display.push(data);
-                         }this.ownerId=this.dataItem[index].data.asset.description
+                         }this.ownerId=this.dataItem[index].description
                                                 
                         
                         for(var i=0;i<1;i++) {
-                           this.origin=this.dataItem[i].data.asset.location;
-                           this.productTime=this.dataItem[i].data.asset.time;
-
-                        }       
-
+                           this.origin=this.dataItem[i].location;
+                           var time=this.dataItem[i].manufacture.date;
+                           this.productTime=moment(time).format("DD-MM-YYYY");
+                        }  
               
                       }
                       else{
@@ -140,22 +164,16 @@ public data:any[];
               let modal = this.modalCtrl.create(ReportModalPage, { 
                 'prop': 'prop1', 
                 onFeedBack: (data) => {
-                //  console.log('Input callback' + JSON.stringify(data));
+               
                 }
               });
 
               modal.onDidDismiss(data => {
-                //console.log('Closed with data:' + JSON.stringify(data));
+               
               });
 
               modal.present().then(result => {
-                // modal.overlay['subscribe']((z) => {
-                //   console.log(JSON.stringify(z));
-                // })
-                // const testComp = modal.overlay['instance'] as ReportModalPage;
-                // testComp.feedbackSubmit.subscribe(() => {
-                //   alert(1);
-                // })
+        
               });
             
           }
@@ -239,20 +257,48 @@ public data:any[];
                      });
             }
 
-          ownerInfo(value:any) {           
+          ownerInfo(value:any) {  
+             
             if(value=="owner"){
-                  const confirm = this.alertCtrl.create({
-            title: "Owner"+""+this.ownedDetails,
-            message: "Date "+" "+moment(this.ownedTime).format("YYYY-MM-DD HH:mm"),            
+            const confirm = this.alertCtrl.create({
+            title: "Owner",
+            message: "<b>Status</b>"+" "+ "Owned"+" "+"<br>"+"<b>Date</b>"+" "+this.ownedTime,            
+              buttons: [
+              {
+                text: 'ok',
+                handler: data => {            
+             
+                }
+              },]
             });
             confirm.present();
             }
 
            else if (value == "manufacture"){
                 const confirm = this.alertCtrl.create({
-              title: 'Manufacture',
-              message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
-              
+                title: 'Manufacture Info',
+                message: "<b>Company<b>"+"-"+this.manufactureInfo+" "+"<br>"+"<b>Address</b>"+"-"+this.city+","+this.state+","+"<br>"+this.country+","+this.pin,
+                buttons: [
+                          {
+                            text: 'ok',
+                            handler: data => {            
+                               
+                          }
+                },]
+            });
+            confirm.present();
+            }
+            else if("warantty"){
+                const confirm = this.alertCtrl.create({
+                title: 'warranty Info',
+                message: "<b>Date of ownership transfer <b>"+"<br>"+"<br>"+this.transferTime,
+                buttons: [
+                          {
+                            text: 'ok',
+                            handler: data => {            
+                               
+                          }
+                },]
             });
             confirm.present();
             }

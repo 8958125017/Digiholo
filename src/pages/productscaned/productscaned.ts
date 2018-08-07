@@ -25,7 +25,9 @@ ownerListdata:any[]=[];
 noOwnerData=false;
 scanedListdata:any[]=[];
 noScanedData=false;
+activeStaus:boolean=false;
  constructor(public navCtrl: NavController,private network: Network,public alertCtrl: AlertController,private sharingVar: SocialSharing,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public platform:Platform,public navParams: NavParams,public _setupService: SetupService,public loadingCtrl: LoadingController) {
+      
       this.user=JSON.parse(localStorage.getItem('logindetail'));
           if(this.user)            
           {
@@ -35,25 +37,36 @@ noScanedData=false;
             this.getOwenedData();
           }  
   }
-  
-  getOwenedData(){    
+  deactiveStaus:boolean=false;
+  getOwenedData(){        
     this.ownerListdata=[];
                   let loading = this.loadingCtrl.create({
-                      content: 'finding owner products.....',
-                      dismissOnPageChange: true,
-                      showBackdrop: true,
-                      duration:15000,
-                      enableBackdropDismiss: true,
+                      content: 'finding owned products.....',                      
+                      duration:15000
                     });
                    loading.present();                 
-                   const url = this._setupService.basePath + '/multichain/user/owenersProduct?userAddress='+this.userAdd;
-                      this._setupService.GetRequest(url).subscribe((response)=>{    
-                                    
-                       loading.dismiss();                       
+                   const url = this._setupService.basePath + '/multichain/product/ownersProduct?userAddress='+this.userAdd;
+                      this._setupService.GetRequest(url).subscribe((response)=>{                                      
+                       loading.dismiss();                        
                        if(response[0].json.responseCode==200 ){
-                         if(response[0].json.data.owner.length>0){
+                         if(response[0].json.data[0].owner.length>0){
                             this.noOwnerData=false;
-                            this.ownerListdata=response[0].json.data.owner;
+                            var result=response[0].json.data[0].owner;
+                             for(var i=0;i<result.length;i++){
+                              let objData ={
+                                  sn :'',
+                                  productName:'',
+                                  productKeyName:'',
+                                  status:''
+                              };
+                              var j = i+1;
+                              objData.sn =j.toString();
+                              objData.productName=(result[i].productName);
+                              objData.productKeyName=(result[i].productKeyName);
+                              objData.status=(result[i].status);                              
+                             
+                              this.ownerListdata.push(objData);
+                           }
                           }else{
                             this.noOwnerData=true;
                           }
@@ -64,10 +77,11 @@ noScanedData=false;
                   });
   }
 
-   getScanedData(){     
+   getScanedData(){    
+    
          this.scanedListdata=[];
              let loading = this.loadingCtrl.create({
-                     content: 'finding owner products.....',
+                     content: 'finding scaned products.....',
                       dismissOnPageChange: true,
                       showBackdrop: true,
                       duration:15000,
@@ -76,7 +90,8 @@ noScanedData=false;
                    loading.present();                 
                    const url = this._setupService.basePath + '/multichain/user/scannedList?userAddress='+this.userAdd;
                    this._setupService.GetRequest(url).subscribe((response)=>{ 
-                  loading.dismiss();                                    
+                  loading.dismiss();
+                                                      
                   if(response[0].json.responseCode==200 ){
                          if(response[0].json.data.scann.length>0){
                            this.noScanedData=false;
@@ -92,6 +107,9 @@ noScanedData=false;
 
   getownedProductInfo(productInfo:any,streamKey:any){    
      this.navCtrl.setRoot(OwnedproductinfoPage, { 'getOwnproductId': productInfo,'getOwnstremKey': streamKey}); 
+  }
+  getownedProductInfowithDetails(productInfo:any,streamKey:any){
+    this.navCtrl.setRoot(ProductPage, { 'getOwnproductId': productInfo,'getOwnstremKey': streamKey}); 
   }
   
    showConfirm(productName:any,productStreamKey:any){

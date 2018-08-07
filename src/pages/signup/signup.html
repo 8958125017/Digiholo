@@ -7,27 +7,33 @@
 	<form [formGroup]="signupForm">
 		<ion-list no-lines class="form-input-fields">
 		 <ion-item  >
-		    <ion-label floating>User Name</ion-label>
+		    <ion-label floating>Name</ion-label>
 		    <ion-input [(ngModel)]="signupDetail.userName" formControlName="userName" type="text" required></ion-input> 		
 	     </ion-item>
      
          <ion-item class="small" *ngIf="!signupForm.controls['userName'].valid &&signupForm.controls ['userName'].dirty">
             <span *ngIf="signupForm.controls['userName'].errors['required']">
-                <p style="color:red;">User Name cannot be left blank</p>
+                <p style="color:red;"> Name cannot be left blank</p>
             </span>
-            <span *ngIf="signupForm.controls['userName'].errors['pattern']">
+           <!--  <span *ngIf="signupForm.controls['userName'].errors['pattern']">
                 <p style="color:red;">User Name must contain 3-28 characters, only alphabets and no spaces</p>
-            </span>
+            </span> -->
          </ion-item>
 
 		 <ion-item >
 		    <ion-label floating>Contact Number</ion-label>
-		    <ion-input [(ngModel)]="signupDetail.contactNumber"  formControlName="contactNumber" type="text" required></ion-input> 
+		    <ion-input [(ngModel)]="signupDetail.contactNumber" minlength="10" maxlength="10" formControlName="contactNumber" type="number" required></ion-input> 
 		 </ion-item>
          <ion-item *ngIf="!signupForm.controls['contactNumber'].valid &&signupForm.controls ['contactNumber'].dirty">
             <span *ngIf="signupForm.controls['contactNumber'].errors['required']">
                 <p style="color:red;">Contact Number cannot be left blank</p>
             </span>
+            <span *ngIf="signupForm.controls['contactNumber'].errors['minlength']">
+                 <p style="color:red;">contact Number must be atleast 10 numbers</p>
+             </span>
+             <span *ngIf="signupForm.controls['contactNumber'].errors['maxlength']">
+                 <p style="color:red;">contact Number should not be greater then 10.</p>
+             </span>
             <!-- <span *ngIf="signupForm.controls['contactNumber'].errors['pattern']">
                 <p style="color:red;">Contact Number not valid.</p>
             </span> -->
@@ -87,8 +93,8 @@
 			</ion-row>
 			<hr>
 			<ion-row>
-				<ion-col text-center  style="font-size: 0.8em; color: #bdbdbd;">
-					Already a member? <a class="button-color" (click)="onLogin()">Login</a>
+				<ion-col text-center  style="font-size: 0.9em; color: #bdbdbd;">
+					Already a member? <a class="button-color" (click)="onLogin()" style="font-size: 12px;">Login</a>
 				</ion-col>
 			</ion-row>
 		</ion-list>

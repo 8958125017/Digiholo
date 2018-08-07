@@ -35,8 +35,8 @@ public reportForm: FormGroup;
 
   reportFormInit(){
       this.reportForm = this.fb.group({
-            'name': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z]{3,32}$/)])),
-            'location': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z]$/)])),
+            'name': new FormControl('',Validators.compose([Validators.required])),
+            'location': new FormControl('',Validators.compose([Validators.required])),
             'email': new FormControl('',Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z][-_.a-zA-Z0-9]{3,29}\@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,15}|[0-9]{1,3})(\]?)$/)])),
             'mobileNo': new FormControl('',Validators.compose([Validators.required,Validators.minLength(0), Validators.maxLength(10)])),
             'problem':new FormControl('', Validators.required),

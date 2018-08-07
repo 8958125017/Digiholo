@@ -11,6 +11,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { ConferenceApp } from './app.component';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
+import { HomePage } from '../pages/home/home';
 import { ForgotpasswordPage} from '../pages/forgotpassword/forgotpassword';
 import { SignupPage } from '../pages/signup/signup';
 import { ChangepasswordPage } from '../pages/changepassword/changepassword';
@@ -36,7 +37,6 @@ import { TransferownershipPage } from '../pages/transferownership/transferowners
 import { OtpReceivePage} from '../pages/otp-receive/otp-receive';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { StorelocatiolistPage} from '../pages/storelocatiolist/storelocatiolist';
-import { GmapPage } from '../pages/gmap/gmap';
 import { AgmCoreModule } from '@agm/core';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Camera } from '@ionic-native/camera';
@@ -69,11 +69,11 @@ import { Network } from '@ionic-native/network';
     ReportappModalPage,
     OtpReceivePage,
     StorelocatiolistPage,
-    GmapPage,    
+    HomePage     
   ],
   imports: [
   AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCS-JPv-UnylrjSuPAgTEolYkYhMBjOCvs',libraries: ["places"]
+      apiKey: 'AIzaSyDgrKvQQhwKYUvgt2L-d57OnGklEk1l_i0',libraries: ["places"]
     }),
     BrowserModule,
     HttpModule,
@@ -83,6 +83,7 @@ import { Network } from '@ionic-native/network';
       links: [
         { component: TutorialPage, name: 'Tutorial', segment: 'tutorial' },
         { component: LoginPage, name: 'LoginPage', segment: 'login' },
+          { component: HomePage, name: 'HomePage', segment: 'home' },
         { component: ForgotpasswordPage, name: 'ForgotpasswordPage', segment: 'forgotpassword' },
         { component: SignupPage, name: 'SignupPage', segment: 'signup' },
         { component: ChangepasswordPage, name: 'ChangepasswordPage', segment: 'changepassword' },
@@ -102,8 +103,6 @@ import { Network } from '@ionic-native/network';
         { component: TransferownershipPage, name: 'TransferownershipPage', segment: 'transferownership'}, 
         { component: OtpReceivePage, name: 'OtpReceivePage', segment: 'OtpReceive'},  
         { component: StorelocatiolistPage, name: 'StorelocatiolistPage', segment: 'storelocatiolist'}, 
-        { component: GmapPage, name: 'GmapPage', segment: 'gmap'}       
-
       ]
     }),
     IonicStorageModule.forRoot()
@@ -113,6 +112,7 @@ import { Network } from '@ionic-native/network';
     ConferenceApp,
     TutorialPage,  
     LoginPage,
+    HomePage,
     ForgotpasswordPage,
     ChangepasswordPage,     
     SignupPage,
@@ -131,8 +131,7 @@ import { Network } from '@ionic-native/network';
     TransferownershipPage,
     ReportappModalPage,
     OtpReceivePage,
-    StorelocatiolistPage,
-    GmapPage
+    StorelocatiolistPage    
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },

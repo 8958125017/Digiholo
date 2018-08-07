@@ -66,7 +66,7 @@ export class ProfilePage {
    let postData={
          userName:this.userInfo.userName,
          email:this.userInfo.emailId,
-         contactNumber:this.userInfo.phoneNo,
+         contactNumber:"+91"+this.userInfo.phoneNo,
          userAddress:this.userInfo.userAddress,
          image:this.userInfo.image
       }

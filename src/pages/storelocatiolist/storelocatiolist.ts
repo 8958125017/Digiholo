@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SetupService } from '../../services/setup.service';
-import { GmapPage } from '../../pages/gmap/gmap';
+
 /**
  * Generated class for the StorelocatiolistPage page.
  *
@@ -29,13 +29,12 @@ export class StorelocatiolistPage {
    }
    const url =this._setupService.basePath+'/multichain/product/locator';    
    this._setupService.PostRequest(url,postData).subscribe((response)=>{
-   debugger
+   
     this.locationList=response;
    })
   }
   getDirections(){
-  	this.navCtrl.push(GmapPage);
-  	console.log("open map");
+  	  	console.log("open map");
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad StorelocatiolistPage');

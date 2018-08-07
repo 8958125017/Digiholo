@@ -18,6 +18,9 @@ import { ReferPage } from '../pages/refer/refer';
 import { ProfilePage } from '../pages/profile/profile';
 import { HelpPage } from '../pages/help/help';
 import { AboutappPage } from '../pages/aboutapp/aboutapp';
+import { Network } from '@ionic-native/network';
+import { SetupService } from '../services/setup.service'; 
+import { HomePage } from '../pages/home/home';
 export interface PageInterface {
   title: string;
   name: string;
@@ -55,10 +58,10 @@ export class ConferenceApp {
   ];
   loggedOutPages: PageInterface[] = [
     { title: 'Login', name: 'LoginPage', component: LoginPage, icon: 'log-in' },
-      { title: 'Signup', name: 'SignupPage', component: SignupPage, icon: 'person-add' }
+    { title: 'Signup', name: 'SignupPage', component: SignupPage, icon: 'person-add' }
   ];
   rootPage: any;
-
+  
   constructor(
     public events: Events,
     public userData: UserData,
@@ -67,11 +70,32 @@ export class ConferenceApp {
     public confData: ConferenceData,
     public storage: Storage,
     public splashScreen: SplashScreen,
-    public  app: App,public alertCtrl: AlertController,
+    public app: App,
+    public alertCtrl: AlertController,
     public statusBar: StatusBar,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public network: Network,public _setupService: SetupService
   ) {
 
+       this.platform.ready().then(() => {
+       this.statusBar.overlaysWebView(false);
+       this.statusBar.backgroundColorByHexString('#0000FF');
+       this.splashScreen.hide();
+       this._setupService.initializeNetworkEvents();
+             // Offline event
+          this.events.subscribe('network:offline', () => {
+            localStorage.setItem('NetworkStatus',"offline");
+              this.nav.push(HomePage);               
+          });
+
+          // Online event
+          this.events.subscribe('network:online', () => {
+            var compName=localStorage.getItem('cmpName');
+            // alert("compName "+compName);
+            localStorage.removeItem("NetworkStatus");       
+            this.nav.setRoot(compName);                  
+          });
+    });
      this.registerBackButtonAction();
      // Check if the user has already seen the tutorial
      this.storage.get('hasSeenTutorial')
@@ -81,7 +105,7 @@ export class ConferenceApp {
         } else {
           this.rootPage = LoginPage;
         }
-        this.platformReady()
+       
       });
 
     // load the conference data
@@ -166,7 +190,7 @@ export class ConferenceApp {
       loading.present();
       localStorage.removeItem("logindetail");
       localStorage.removeItem("userprofileEmailId");
-    setTimeout(()=>this.welcomeToBack(),
+      setTimeout(()=>this.welcomeToBack(),
       loading.dismiss()
       ,1000)
       
@@ -199,13 +223,7 @@ export class ConferenceApp {
     this.menu.enable(!loggedIn, 'loggedOutMenu');
   }
 
-  platformReady() {
-    // Call any initial plugins when ready
-    this.platform.ready().then(() => {
-      this.statusBar.backgroundColorByHexString('#001f38');
-      this.splashScreen.hide();
-    });
-  }
+  
 
   isActive(page: PageInterface) {
     let childNav = this.nav.getActiveChildNavs()[0];
